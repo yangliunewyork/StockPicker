@@ -12,13 +12,7 @@ from Model.Stock import Stock
 class NasdaqTracker:
     """
     A class to pull tickers list from Nasdap.
-    Here is what you cant get:
-    ["Symbol","Name","LastSale","MarketCap","IPOyear",
-    "Sector","industry","Summary Quote"]
     """
-
-    def __init__(self):
-        self.nasdaq_url = "ftp.nasdaqtrader.com/SymbolDirectory ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt"
 
     def get_tickers(self):
         """

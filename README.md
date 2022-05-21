@@ -110,5 +110,7 @@ pip uninstall <PackageName>
 Run the script: 
 
 ```
-python ./StockPicker.py 
+python ./StockPicker.py -t AAPL AMZN SQ FB TSLA GOOGL // get stock information and pick good stock among them
+python ./StockPicker.py -h // Show help
+python ./StockPicker.py // get all live tickers from Nasdaq and pick good stock among them.
 ```

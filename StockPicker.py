@@ -1,22 +1,30 @@
 #!/usr/bin/python
 
 import sys
+import argparse
 from Model.Stock import Stock
 from DataCollector.NasdaqTracker import NasdaqTracker
 from DataCollector.YahooFinanceTracker import YahooFinanceTracker
 from InvestmentStrategy.PersonalStrategy import PersonalStrategy
 
+def main(argv):
+    argumentParser = argparse.ArgumentParser(description='Command list.')
+    argumentParser.add_argument('-t','--tickers', nargs='+', help='StockPicker.py -t AAPL AMZN', required=False)
+    args = argumentParser.parse_args()
 
-if __name__ == "__main__":
-
-    nasdaq_tracker = NasdaqTracker()
-    nasdaq_tickers = nasdaq_tracker.get_tickers()
-    print("Total stocks : " , str(len(nasdaq_tickers)))
+    tickers = []
+    if args.tickers:
+        tickers = args.tickers
+    else:    
+        nasdaq_tracker = NasdaqTracker()
+        nasdaq_tickers = nasdaq_tracker.get_tickers()
+        print("Total stocks in Nasdaq: " , str(len(nasdaq_tickers)))
+        tickers = nasdaq_tickers
 
 
     yahoo_tracker = YahooFinanceTracker()
-    #nasdaq_tickers = ["GOOG","FB","GILD","AAPL"]
-    yahoo_stocks = yahoo_tracker.get_data_from_yahoo(nasdaq_tickers)
+    #tickers = ["GOOG","FB","GILD","AAPL"]
+    yahoo_stocks = yahoo_tracker.get_data_from_yahoo(tickers)
     personal_strategy = PersonalStrategy()
     good_stocks = []
     for stock in yahoo_stocks:
@@ -29,3 +37,8 @@ if __name__ == "__main__":
     for stock in good_stocks:
         print(stock.to_json())
     sys.exit(0)
+
+
+if __name__ == "__main__":
+    main(sys.argv)
+

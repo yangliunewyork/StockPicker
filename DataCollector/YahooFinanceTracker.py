@@ -2,7 +2,6 @@
 import requests
 import csv
 from Model.Stock import Stock
-#from yahoo_finance import Share # not working any more
 import yfinance as yf
 import pandas as pd
 
@@ -57,17 +56,7 @@ class YahooFinanceTracker:
 
     def get_data_from_yahoo(self, symbols_list):
         """
-        Return a Dictionary of <symbol, Stock>
-        Send request to Yahoo API in bulk.
-        s : symbol
-        e: Earnings per Share
-        r: P/E Ratio
-        r2: P/E Ratio (Realtime)
-        r5: PEG Ratio
-        y: Dividend Yield
-        j1 : market cap
-        j2: Shares Outstanding
-        
+        Return a list of stock information.
         """
         stocks = []
 
