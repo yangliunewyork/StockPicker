@@ -20,6 +20,5 @@ six==1.16.0
 tomli==2.0.1
 urllib3==1.26.9
 wrapt==1.14.1
-yahoo-finance==1.4.0
 yapf==0.32.0
 yfinance==0.1.70
