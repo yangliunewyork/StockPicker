@@ -9,9 +9,11 @@ from io import StringIO
 from Model.Stock import Stock
 
 
-class NasdaqTracker:
+class NasdaqDataCollector:
     """
     A class to pull tickers list from Nasdap.
+    Nasdap upload tickers information to a text file in their FTP server every day.
+    This class login the FTP server and parse the text file to get all the tickers.
     """
 
     def get_tickers(self):

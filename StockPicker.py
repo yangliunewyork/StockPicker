@@ -3,8 +3,9 @@
 import sys
 import argparse
 from Model.Stock import Stock
-from DataCollector.NasdaqTracker import NasdaqTracker
-from DataCollector.YahooFinanceTracker import YahooFinanceTracker
+from DataCollector.NasdaqDataCollector import NasdaqDataCollector
+from DataCollector.YahooFinanceDataCollector import YahooFinanceDataCollector
+from DataCollector.StockAnalysisWebsiteDataCollector import StockAnalysisWebsiteDataCollector
 from InvestmentStrategy.PersonalStrategy import PersonalStrategy
 
 def main(argv):
@@ -16,18 +17,31 @@ def main(argv):
     if args.tickers:
         tickers = args.tickers
     else:    
-        nasdaq_tracker = NasdaqTracker()
-        nasdaq_tickers = nasdaq_tracker.get_tickers()
-        print("Total stocks in Nasdaq: " , str(len(nasdaq_tickers)))
-        tickers = nasdaq_tickers
+        nasdaqDataCollector = NasdaqDataCollector()
+        tickers = nasdaqDataCollector.get_tickers()
+        print("Total stocks in Nasdaq: " , str(len(tickers)))
+        tickers = tickers
 
+    stocks = []
+    for ticker in tickers:
+        stock = Stock()
+        stock.m_symbol = ticker
+        stocks.append(stock)
 
-    yahoo_tracker = YahooFinanceTracker()
+    yahooFinanceDataCollector = YahooFinanceDataCollector()
     #tickers = ["GOOG","FB","GILD","AAPL"]
-    yahoo_stocks = yahoo_tracker.get_data_from_yahoo(tickers)
+    for stock in stocks:
+        yahooFinanceDataCollector.get_stock_info(stock)
+
+
+    stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector()
+    for stock in stocks:
+        stockAnalysisWebsiteDataCollector.get_stock_info(stock)
+
     personal_strategy = PersonalStrategy()
     good_stocks = []
-    for stock in yahoo_stocks:
+    for stock in stocks:
+        print(stock.to_json())
         if personal_strategy.stock_validation(stock) :
             good_stocks.append(stock)
 
