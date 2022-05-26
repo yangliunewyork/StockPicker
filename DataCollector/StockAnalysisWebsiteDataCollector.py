@@ -28,6 +28,8 @@ class StockAnalysisWebsiteDataCollector:
         url = "https://stockanalysis.com/stocks/{}/financials/ratios".format(stock.m_symbol)
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
         response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            print (response.status_code)
         parser = html.fromstring(response.content)
         ratios_table = parser.xpath('//table[@id="financial-table"]')[0]
 

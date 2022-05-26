@@ -90,14 +90,14 @@ pyenv uninstall my-virtual-env // Delete the virtual environment
 
 # Development
 
-To enter/exit virtual environment: 
+### To enter/exit virtual environment: 
 
 ```
 pyenv activate my-virtual-env // Enter the virtual environment
 pyenv deactivate // Exit the virtual environment
 ```
 
-To install/uninstall package:
+### To install/uninstall package:
 
 ```
 pip install <PackageName>
@@ -106,11 +106,24 @@ pip uninstall <PackageName>
 
 `pip freeze > requirements.txt ` can be used to generate `requirements.txt`.
 
+### Local module manage
 
-Run the script: 
+We followed https://packaging.python.org/en/latest/guides/packaging-namespace-packages/#native-namespace-packages to setup the modules.
+
+```
+pip install . 
+```
+
+### Run 
+
+#### Run the main script: 
 
 ```
 python ./StockPicker.py -t AAPL AMZN SQ FB TSLA GOOGL // get stock information and pick good stock among them
 python ./StockPicker.py -h // Show help
 python ./StockPicker.py // get all live tickers from Nasdaq and pick good stock among them.
 ```
+
+#### Run individual script
+
+Any python file that has `__main__` function means it can be run independently.

@@ -80,6 +80,6 @@ class YahooFinanceDataCollector:
 
 if __name__ == "__main__":
     dataCollector = YahooFinanceDataCollector()
-    data = dataCollector.get_stock_info(["GOOG", "FB", "GILD", "AAPL"])
+    data = dataCollector.get_stock_info(["GOOG", "FB"])
     for symbol in data:
         print(data[symbol].to_json())

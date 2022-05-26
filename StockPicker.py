@@ -29,19 +29,16 @@ def main(argv):
         stocks.append(stock)
 
     yahooFinanceDataCollector = YahooFinanceDataCollector()
+    stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector()
     #tickers = ["GOOG","FB","GILD","AAPL"]
     for stock in stocks:
         yahooFinanceDataCollector.get_stock_info(stock)
-
-
-    stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector()
-    for stock in stocks:
         stockAnalysisWebsiteDataCollector.get_stock_info(stock)
+        print(stock.to_json())
 
     personal_strategy = PersonalStrategy()
     good_stocks = []
     for stock in stocks:
-        print(stock.to_json())
         if personal_strategy.stock_validation(stock) :
             good_stocks.append(stock)
 

@@ -1,13 +1,10 @@
 #!/usr/bin/python
 import requests
 import csv
-
 from ftplib import FTP
-#from io import BytesIO
 from io import StringIO
 
 from Model.Stock import Stock
-
 
 class NasdaqDataCollector:
     """
@@ -41,6 +38,6 @@ class NasdaqDataCollector:
 
 
 if __name__ == "__main__":
-    tracker = NasdaqTracker()
-    tickers = tracker.get_tickers()
+    nasdaqDataCollector = NasdaqDataCollector()
+    tickers = nasdaqDataCollector.get_tickers()
     print(tickers)
