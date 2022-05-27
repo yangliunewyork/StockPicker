@@ -1,10 +1,12 @@
 #!/usr/bin/python
 
 from lxml import html
-from Model.Stock import Stock
 import requests
+import re
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+from Model.Stock import Stock
 
 class GuruFocusDataCollector:
     """                                                                                                 
@@ -12,8 +14,7 @@ class GuruFocusDataCollector:
     """
 
     def get_stock_info(self, stock):
-        self.get_stock_info_from_cash_flow_statement(stock)
-        self.get_stock_info_from_ratios(stock)
+        self.get_wacc(stock)
 
     def get_wacc(self, stock):
         url = "https://www.gurufocus.com/term/wacc/NAS:{}/WACC".format(stock.m_symbol)
@@ -22,13 +23,20 @@ class GuruFocusDataCollector:
         if response.status_code != 200:
             print (response.status_code)
         parser = html.fromstring(response.content)
-        ratios_table = parser.xpath('//div[@id="def_body_detail_height"]')[0]
-        print (ratios_table)
+        innter_text = parser.xpath('//div[@id="def_body_detail_height"]/font')[0].text_content()
+        #print (innter_text)
+        match = re.search(r'(\d+(\.\d+)?%)', innter_text)
+        if match :
+            wacc_ratio_str = match.group(0)
+            wacc_ratio = float(wacc_ratio_str.strip('%'))/100
+            stock.m_weighted_average_cost_of_capital_ratio = wacc_ratio
+        else:
+            print("WACC ratio is not found for stock {}".format(stock.m_symbol))
+
 
 if __name__ == "__main__":
     dataCollector = GuruFocusDataCollector()
     stock = Stock()
     stock.m_symbol = 'AMZN'
-    data = dataCollector.get_stock_info()
-    for symbol in data:
-        print(data[symbol].to_json())
+    dataCollector.get_stock_info(stock)
+    print(stock.to_json())

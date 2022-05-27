@@ -127,3 +127,7 @@ python ./StockPicker.py // get all live tickers from Nasdaq and pick good stock 
 #### Run individual script
 
 Any python file that has `__main__` function means it can be run independently.
+
+```
+python DataCollector/GuruFocusDataCollector.py
+```

@@ -1,5 +1,6 @@
 class IntrinsicValueCalculator:
-    def intrinsicValueBasedOnDiscountedCashFlow(
+    def calculateIntrinsicValueBasedOnDiscountedCashFlow(
+        self,
         currentFreeCashPerShare, 
         freeCashPerShareGrowthRate,
         discountedRate, # probably should be WACC
@@ -17,3 +18,18 @@ class IntrinsicValueCalculator:
         
         currentIntrinsicValue = discountedCashFlow + discountedTerminalValue
         return currentIntrinsicValue
+
+
+if __name__ == "__main__":
+    intrinsicValueCalculator = IntrinsicValueCalculator()
+    currentFreeCashPerShare = 3.17
+    freeCashPerShareGrowthRate = 0.1390
+    discountedRate = 0.076
+    perpetualGrowthRate = 0.02
+    intrinsic_value = intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(3.17, 0.1390, 0.076, 0.02)
+    str = """The intrinsic value of a stock with 
+                currentFreeCashPerShare = {}, 
+                freeCashPerShareGrowthRate = {}, 
+                discountedRate = {}, 
+                perpetualGrowthRate={} is {}""".format(3.17, 0.1390, 0.076, 0.02, intrinsic_value)
+    print (str)

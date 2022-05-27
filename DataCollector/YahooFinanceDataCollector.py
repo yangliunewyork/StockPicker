@@ -1,9 +1,10 @@
 #!/usr/bin/python
 import requests
 import csv
-from Model.Stock import Stock
 import yfinance as yf
 import pandas as pd
+
+from Model.Stock import Stock
 
 class YahooFinanceUrlBuilder:
     """
@@ -61,7 +62,11 @@ class YahooFinanceDataCollector:
         print("Getting stock information for {} ...".format(stock.m_symbol))
         #yahooStockInfo = Share(symbol)
         stockInfo = yf.Ticker(stock.m_symbol)
-        
+        #print (stockInfo.info)
+        if 'shortName' in stockInfo.info:
+            stock.m_company_name = stockInfo.info['shortName']
+        if 'currentPrice' in stockInfo.info:
+            stock.m_price = stockInfo.info['currentPrice']
         if 'bookValue' in stockInfo.info:
             stock.m_book_value_per_share = stockInfo.info['bookValue']
         if 'priceToBook' in stockInfo.info:
@@ -70,16 +75,23 @@ class YahooFinanceDataCollector:
             stock.m_dividend_yield = stockInfo.info['dividendYield']
         if 'totalCashPerShare' in stockInfo.info:
             stock.m_cash_per_share = stockInfo.info['totalCashPerShare']
+        if 'profitMargins' in stockInfo.info:
+            stock.m_profit_margin = stockInfo.info['profitMargins']    
         if 'marketCap' in stockInfo.info:
             stock.m_market_cap = stockInfo.info['marketCap']
+        if 'returnOnAssets' in stockInfo.info:
+            stock.m_return_on_assets = stockInfo.info['returnOnAssets']
         if 'returnOnEquity' in stockInfo.info:
             stock.m_return_on_equity_ratio = stockInfo.info['returnOnEquity']
+        if 'pegRatio' in stockInfo.info:
+            stock.m_peg_ratio = stockInfo.info['pegRatio']
         if 'freeCashflow' in stockInfo.info and 'sharesOutstanding' in stockInfo.info:
             stock.m_cash_flow_per_share = stockInfo.info['freeCashflow'] / stockInfo.info['sharesOutstanding']
 
 
 if __name__ == "__main__":
     dataCollector = YahooFinanceDataCollector()
-    data = dataCollector.get_stock_info(["GOOG", "FB"])
-    for symbol in data:
-        print(data[symbol].to_json())
+    stock = Stock()
+    stock.m_symbol = 'AMZN'
+    dataCollector.get_stock_info(stock)
+    print(stock.to_json())

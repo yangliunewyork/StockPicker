@@ -1,12 +1,12 @@
 #!/usr/bin/python
-
 from lxml import html
 import csv
-from Model.Stock import Stock
 import pandas as pd
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+from Model.Stock import Stock
 
 class StockAnalysisWebsiteDataCollector:
     """                                                                                                 
@@ -72,6 +72,7 @@ class StockAnalysisWebsiteDataCollector:
 
 if __name__ == "__main__":
     dataCollector = StockAnalysisWebsiteDataCollector()
-    data = dataCollector.get_data(["GOOG", "FB", "GILD", "AAPL"])
-    for symbol in data:
-        print(data[symbol].to_json())
+    stock = Stock()
+    stock.m_symbol = 'AMZN'
+    dataCollector.get_stock_info(stock)
+    print(stock.to_json())
