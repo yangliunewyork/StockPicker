@@ -23,7 +23,7 @@ def call_data_collectors(stocks):
     # Disable it as it has a rate limit that requires 30 seconds apart
     #stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector() 
 
-    sleep_time = 2
+    sleep_time = 0.1
 
     for stock in stocks:
         yahooFinanceDataCollector.get_stock_info(stock)
