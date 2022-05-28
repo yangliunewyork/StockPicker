@@ -5,6 +5,8 @@ import requests
 import re
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+import logging
+import traceback
 
 from Model.Stock import Stock
 
@@ -14,8 +16,14 @@ class GuruFocusDataCollector:
     """
 
     def get_stock_info(self, stock):
-        self.get_wacc(stock)
-        self.get_intrinsic_value(stock)
+        try:
+            self.get_wacc(stock)
+        except Exception as e:
+            logging.error(traceback.format_exc())
+        try:
+            self.get_intrinsic_value(stock)
+        except Exception as e:
+            logging.error(traceback.format_exc())
 
     def get_wacc(self, stock):
         url = "https://www.gurufocus.com/term/wacc/NAS:{}/WACC".format(stock.m_symbol)
@@ -31,8 +39,8 @@ class GuruFocusDataCollector:
             wacc_ratio_str = match.group(0)
             wacc_ratio = float(wacc_ratio_str.strip('%'))/100
             stock.m_weighted_average_cost_of_capital_ratio = wacc_ratio
-        else:
-            print("WACC ratio is not found for stock {}".format(stock.m_symbol))
+        #else:
+           # print("WACC ratio is not found for stock {}".format(stock.m_symbol))
 
     def get_intrinsic_value(self, stock):
         self.get_intrinsic_value_for_nasdaq_stock(stock)

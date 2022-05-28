@@ -50,11 +50,17 @@ def calculate_intrinsic_value(stocks):
 def main(argv):
     argumentParser = argparse.ArgumentParser(description='Command list.')
     argumentParser.add_argument('-t','--tickers', nargs='+', help='StockPicker.py -t AAPL AMZN', required=False)
+    argumentParser.add_argument('-tf','--tickers-file',  help='StockPicker.py -tf ./tickers.txt', required=False)
     args = argumentParser.parse_args()
 
     tickers = []
     if args.tickers:
         tickers = args.tickers
+    elif args.tickers_file:
+        print ("Getting tickers from file {}".format(args.tickers_file))
+        with open(args.tickers_file) as file:
+            lines = file.readlines()
+            tickers = [line.rstrip() for line in lines]
     else:    
         nasdaqDataCollector = NasdaqDataCollector()
         tickers = nasdaqDataCollector.get_tickers()
@@ -74,8 +80,10 @@ def main(argv):
     personal_strategy = PersonalStrategy()
     good_stocks = personal_strategy.recommend_good_stocks(stocks)
     print("{} of good stocks are recommended: ".format(str(len(good_stocks))))
+    f = open("goodstocks.txt", "a")
     for stock in good_stocks:
-        print(stock.to_json())
+        f.write(stock.to_json())
+    f.close()
     exit(0)
 
 if __name__ == "__main__":

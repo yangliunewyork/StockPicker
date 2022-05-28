@@ -85,7 +85,8 @@ class YahooFinanceDataCollector:
             stock.m_return_on_equity = stockInfo.info['returnOnEquity']
         if 'pegRatio' in stockInfo.info:
             stock.m_peg_ratio = stockInfo.info['pegRatio']
-        if 'freeCashflow' in stockInfo.info and 'sharesOutstanding' in stockInfo.info:
+        if ('freeCashflow' in stockInfo.info and stockInfo.info['freeCashflow'] 
+            and 'sharesOutstanding' in stockInfo.info and stockInfo.info['sharesOutstanding']):
             stock.m_cash_flow_per_share = stockInfo.info['freeCashflow'] / stockInfo.info['sharesOutstanding']
 
 
