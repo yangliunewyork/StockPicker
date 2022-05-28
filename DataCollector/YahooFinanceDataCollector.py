@@ -82,7 +82,7 @@ class YahooFinanceDataCollector:
         if 'returnOnAssets' in stockInfo.info:
             stock.m_return_on_assets = stockInfo.info['returnOnAssets']
         if 'returnOnEquity' in stockInfo.info:
-            stock.m_return_on_equity_ratio = stockInfo.info['returnOnEquity']
+            stock.m_return_on_equity = stockInfo.info['returnOnEquity']
         if 'pegRatio' in stockInfo.info:
             stock.m_peg_ratio = stockInfo.info['pegRatio']
         if 'freeCashflow' in stockInfo.info and 'sharesOutstanding' in stockInfo.info:

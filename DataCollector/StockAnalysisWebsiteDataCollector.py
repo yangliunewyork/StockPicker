@@ -73,6 +73,6 @@ class StockAnalysisWebsiteDataCollector:
 if __name__ == "__main__":
     dataCollector = StockAnalysisWebsiteDataCollector()
     stock = Stock()
-    stock.m_symbol = 'AMZN'
+    stock.m_symbol = 'GOOGL'
     dataCollector.get_stock_info(stock)
     print(stock.to_json())

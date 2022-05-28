@@ -27,9 +27,21 @@ if __name__ == "__main__":
     discountedRate = 0.076
     perpetualGrowthRate = 0.02
     intrinsic_value = intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(3.17, 0.1390, 0.076, 0.02)
-    str = """The intrinsic value of a stock with 
+    print ("""The intrinsic value of a stock with 
                 currentFreeCashPerShare = {}, 
                 freeCashPerShareGrowthRate = {}, 
                 discountedRate = {}, 
-                perpetualGrowthRate={} is {}""".format(3.17, 0.1390, 0.076, 0.02, intrinsic_value)
-    print (str)
+                perpetualGrowthRate={} is {}"""
+                .format(3.17, 0.1390, 0.076, 0.02, 
+                    intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(3.17, 0.1390, 0.076, 0.02)
+                )
+    )
+    intrinsic_value = intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(385.58, 0.1390, 0.076, 0.02)
+    print ("""The intrinsic value of a stock with 
+                currentFreeCashPerShare = {}, 
+                freeCashPerShareGrowthRate = {}, 
+                discountedRate = {}, 
+                perpetualGrowthRate={} is {}""".format(385.58, 0.14, 0.076, 0.02, 
+                    intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(385.58, 0.14, 0.076, 0.02)
+                )
+    )

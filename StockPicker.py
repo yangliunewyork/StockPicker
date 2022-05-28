@@ -18,14 +18,16 @@ def call_data_collectors(stocks):
     """
     # Data collectors
     yahooFinanceDataCollector = YahooFinanceDataCollector()
-    stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector()
     guruFocusDataCollector = GuruFocusDataCollector()
 
-    sleep_time = 30
+    # Disable it as it has a rate limit that requires 30 seconds apart
+    #stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector() 
+
+    sleep_time = 2
 
     for stock in stocks:
         yahooFinanceDataCollector.get_stock_info(stock)
-        stockAnalysisWebsiteDataCollector.get_stock_info(stock)
+        #stockAnalysisWebsiteDataCollector.get_stock_info(stock)
         guruFocusDataCollector.get_stock_info(stock)
         time.sleep(sleep_time)
         print ("Sleep {} seoncds to avoid being blocked by website".format(sleep_time))
@@ -34,30 +36,16 @@ def calculate_intrinsic_value(stocks):
     perpetualGrowthRate = 0.02 # Choose inflation rate.
     intrinsicValueCalculator = IntrinsicValueCalculator()
     for stock in stocks:
-        stock.m_intrinsic_value = intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(
-            stock.m_free_cash_flow_per_share,
-            stock.m_free_cash_flow_per_share_growth_rate,
-            stock.m_weighted_average_cost_of_capital_ratio,
-            perpetualGrowthRate
-        )
-
-def recommend_good_stocks(stocks):
-    """
-    Recommend good stocks based on stocks information.
-    """
-    personal_strategy = PersonalStrategy()
-    good_stocks = []
-    for stock in stocks:
-        if personal_strategy.stock_validation(stock) :
-            good_stocks.append(stock)
-
-    # Sorting and printing
-    good_stocks.sort(key=lambda x: (x.m_price, -x.m_price_to_book_ratio), reverse=False)
-    print("Good stocks : ", str(len(good_stocks)))
-    for stock in good_stocks:
-        print(stock.to_json())
-    sys.exit(0)
-
+        if stock.m_intrinsic_value is None:
+            if (stock.m_free_cash_flow_per_share 
+                and stock.m_free_cash_flow_per_share_growth_rate 
+                and stock.m_weighted_average_cost_of_capital_ratio):
+                stock.m_intrinsic_value = intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(
+                    stock.m_free_cash_flow_per_share,
+                    stock.m_free_cash_flow_per_share_growth_rate,
+                    stock.m_weighted_average_cost_of_capital_ratio,
+                    perpetualGrowthRate
+                )
 
 def main(argv):
     argumentParser = argparse.ArgumentParser(description='Command list.')
@@ -83,10 +71,12 @@ def main(argv):
     call_data_collectors(stocks)
     calculate_intrinsic_value(stocks)
 
-    for stock in stocks:
+    personal_strategy = PersonalStrategy()
+    good_stocks = personal_strategy.recommend_good_stocks(stocks)
+    print("{} of good stocks are recommended: ".format(str(len(good_stocks))))
+    for stock in good_stocks:
         print(stock.to_json())
-
-    recommend_good_stocks(stocks)
+    exit(0)
 
 if __name__ == "__main__":
     main(sys.argv)
