@@ -131,3 +131,20 @@ Any python file that has `__main__` function means it can be run independently.
 ```
 python DataCollector/GuruFocusDataCollector.py
 ```
+
+# Code Style
+
+
+We use `pylint` to check code quality.
+```
+pylint ./DataCollector
+```
+
+ We use [black](https://github.com/psf/black) to auto format the code.
+
+```
+black ./DataCollector
+black ./Utils
+black ./Model
+black ./InvestmentStrategy
+``` 

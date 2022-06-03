@@ -6,6 +6,7 @@ from io import StringIO
 
 from Model.Stock import Stock
 
+
 class NasdaqDataCollector:
     """
     A class to pull tickers list from Nasdap.
@@ -18,15 +19,16 @@ class NasdaqDataCollector:
         Send http request to get stock information.
         Return a stocks HashMap, <"symbol", Stock>
         """
-        ftp = FTP('ftp.nasdaqtrader.com')
+        ftp = FTP("ftp.nasdaqtrader.com")
         ftp.login()
         ftp.cwd("/SymbolDirectory/")
         myfiles = ftp.dir()
-        #print (myfiles)
+        # print (myfiles)
 
         data = StringIO()
-        ftp.retrbinary('RETR nasdaqlisted.txt',
-                       lambda block: data.write(block.decode('utf-8')))
+        ftp.retrbinary(
+            "RETR nasdaqlisted.txt", lambda block: data.write(block.decode("utf-8"))
+        )
         ftp.quit()
         data.seek(0)  # Change the stream position to the byte offset `0`
         tickers = []

@@ -6,6 +6,7 @@ import pandas as pd
 
 from Model.Stock import Stock
 
+
 class YahooFinanceUrlBuilder:
     """
     @ToBeDeprecated
@@ -27,7 +28,7 @@ class YahooFinanceUrlBuilder:
         Add comma-separated fields to url.
         """
         # API fields don't need seperator
-        fields = fields.replace(',', '')
+        fields = fields.replace(",", "")
         self.yahoo_url += "&f=" + fields
         return self
 
@@ -39,8 +40,8 @@ class YahooFinanceUrlBuilder:
 
 
 class YahooFinanceDataCollector:
-    """                                                                                                 
-    A class to pull information from Yahoo Finance                                                        
+    """
+    A class to pull information from Yahoo Finance
     """
 
     def get_data(self, yahoo_url):
@@ -49,7 +50,7 @@ class YahooFinanceDataCollector:
         """
         resp = requests.get(yahoo_url)
         text = resp.iter_lines()
-        reader = csv.reader(text, delimiter=',')
+        reader = csv.reader(text, delimiter=",")
         data = []
         for row in reader:
             data.append(row)
@@ -60,39 +61,45 @@ class YahooFinanceDataCollector:
         Return a list of stock information.
         """
         print("Getting stock information for {} ...".format(stock.m_symbol))
-        #yahooStockInfo = Share(symbol)
+        # yahooStockInfo = Share(symbol)
         stockInfo = yf.Ticker(stock.m_symbol)
-        #print (stockInfo.info)
-        if 'shortName' in stockInfo.info:
-            stock.m_company_name = stockInfo.info['shortName']
-        if 'currentPrice' in stockInfo.info:
-            stock.m_price = stockInfo.info['currentPrice']
-        if 'bookValue' in stockInfo.info:
-            stock.m_book_value_per_share = stockInfo.info['bookValue']
-        if 'priceToBook' in stockInfo.info:
-            stock.m_price_to_book_ratio = stockInfo.info['priceToBook']
-        if 'dividendYield' in stockInfo.info:
-            stock.m_dividend_yield = stockInfo.info['dividendYield']
-        if 'totalCashPerShare' in stockInfo.info:
-            stock.m_cash_per_share = stockInfo.info['totalCashPerShare']
-        if 'profitMargins' in stockInfo.info:
-            stock.m_profit_margin = stockInfo.info['profitMargins']    
-        if 'marketCap' in stockInfo.info:
-            stock.m_market_cap = stockInfo.info['marketCap']
-        if 'returnOnAssets' in stockInfo.info:
-            stock.m_return_on_assets = stockInfo.info['returnOnAssets']
-        if 'returnOnEquity' in stockInfo.info:
-            stock.m_return_on_equity = stockInfo.info['returnOnEquity']
-        if 'pegRatio' in stockInfo.info:
-            stock.m_peg_ratio = stockInfo.info['pegRatio']
-        if ('freeCashflow' in stockInfo.info and stockInfo.info['freeCashflow'] 
-            and 'sharesOutstanding' in stockInfo.info and stockInfo.info['sharesOutstanding']):
-            stock.m_cash_flow_per_share = stockInfo.info['freeCashflow'] / stockInfo.info['sharesOutstanding']
+        # print (stockInfo.info)
+        if "shortName" in stockInfo.info:
+            stock.m_company_name = stockInfo.info["shortName"]
+        if "currentPrice" in stockInfo.info:
+            stock.m_price = stockInfo.info["currentPrice"]
+        if "bookValue" in stockInfo.info:
+            stock.m_book_value_per_share = stockInfo.info["bookValue"]
+        if "priceToBook" in stockInfo.info:
+            stock.m_price_to_book_ratio = stockInfo.info["priceToBook"]
+        if "dividendYield" in stockInfo.info:
+            stock.m_dividend_yield = stockInfo.info["dividendYield"]
+        if "totalCashPerShare" in stockInfo.info:
+            stock.m_cash_per_share = stockInfo.info["totalCashPerShare"]
+        if "profitMargins" in stockInfo.info:
+            stock.m_profit_margin = stockInfo.info["profitMargins"]
+        if "marketCap" in stockInfo.info:
+            stock.m_market_cap = stockInfo.info["marketCap"]
+        if "returnOnAssets" in stockInfo.info:
+            stock.m_return_on_assets = stockInfo.info["returnOnAssets"]
+        if "returnOnEquity" in stockInfo.info:
+            stock.m_return_on_equity = stockInfo.info["returnOnEquity"]
+        if "pegRatio" in stockInfo.info:
+            stock.m_peg_ratio = stockInfo.info["pegRatio"]
+        if (
+            "freeCashflow" in stockInfo.info
+            and stockInfo.info["freeCashflow"]
+            and "sharesOutstanding" in stockInfo.info
+            and stockInfo.info["sharesOutstanding"]
+        ):
+            stock.m_cash_flow_per_share = (
+                stockInfo.info["freeCashflow"] / stockInfo.info["sharesOutstanding"]
+            )
 
 
 if __name__ == "__main__":
     dataCollector = YahooFinanceDataCollector()
     stock = Stock()
-    stock.m_symbol = 'AMZN'
+    stock.m_symbol = "AMZN"
     dataCollector.get_stock_info(stock)
     print(stock.to_json())
