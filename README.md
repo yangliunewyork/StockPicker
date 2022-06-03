@@ -134,6 +134,8 @@ python DataCollector/GuruFocusDataCollector.py
 
 # Code Style
 
+Generally, please refer https://google.github.io/styleguide/pyguide.html.
+
 
 We use `pylint` to check code quality.
 ```

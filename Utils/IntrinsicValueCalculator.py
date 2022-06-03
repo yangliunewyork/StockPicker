@@ -3,25 +3,36 @@ class IntrinsicValueCalculator:
         self,
         currentFreeCashPerShare,
         freeCashPerShareGrowthRate,
-        discountedRate,  # probably should be WACC
+        discountRate,  # probably should be WACC
         perpetualGrowthRate,  # Should be conservative, so probably choose inflation rate
     ):
-        """ """
+        """
+        Args:
+        currentFreeCashPerShare: The average free cash per share of the company for the last x years.
+        freeCashPerShareGrowthRate: The average free cash per share growth rate of the company for the last x years.
+        discountRate:  The rate of return used to determine the present value of future cash flows. Corporations often use the Weighted Average Cost of Capital (WACC).
+        perpetualGrowthRate: The constant rate that a company is expected to grow at forever. Usually choose inflation rate.
+
+        Returns:
+        The calculated intrinsic value.
+        """
+
+        # Calculate discounted cash flow of the next x years.
         discountedCashFlow = 0
         for year in range(1, 10):
             cashFlowAtTheYear = currentFreeCashPerShare * (
                 pow((1 + freeCashPerShareGrowthRate), year)
             )
-            discountedCashFlow += cashFlowAtTheYear / (pow((1 + discountedRate), year))
+            discountedCashFlow += cashFlowAtTheYear / (pow((1 + discountRate), year))
 
-        # Use Perpetuity Method to calculate the terminal value
+        # Use Perpetuity Method to calculate the terminal value at x-th year.
         cashFlowOfLastYear = currentFreeCashPerShare * (
             pow((1 + freeCashPerShareGrowthRate), 10)
         )
         terminalValue = (
             cashFlowOfLastYear
             * (1 + perpetualGrowthRate)
-            / (discountedRate - perpetualGrowthRate)
+            / (discountRate - perpetualGrowthRate)
         )
         discountedTerminalValue = terminalValue / pow(
             (1 + freeCashPerShareGrowthRate), 10
@@ -31,9 +42,19 @@ class IntrinsicValueCalculator:
         return currentIntrinsicValue
 
     def intrinsicValueBasedOnBookValueGrowth(
-        currentBookValue, bookValueGrowthRate, numOfYears, tenYearTreasuryRate
+        currentBookValuePerShare, bookValueGrowthRate, numOfYears, tenYearTreasuryRate
     ):
-        futureBookValue = currentBookValue * (
+        """
+        Args:
+        currentBookValuePerShare: The current book value per share of the company.
+        bookValueGrowthRate: The average book value growth rare of the company for the last x years.
+        numOfYears:  Number of years in the future that you want to calculate based on.
+        tenYearTreasuryRate: The 10-year treaseury rate.
+
+        Returns:
+        The calculated intrinsic value.
+        """
+        futureBookValue = currentBookValuePerShare * (
             pow((1 + bookValueGrowthRate), numOfYears)
         )
         currentIntrinsicValue = futureBookValue / (
@@ -46,7 +67,7 @@ if __name__ == "__main__":
     intrinsicValueCalculator = IntrinsicValueCalculator()
     currentFreeCashPerShare = 3.17
     freeCashPerShareGrowthRate = 0.1390
-    discountedRate = 0.076
+    discountRate = 0.076
     perpetualGrowthRate = 0.02
     intrinsic_value = (
         intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(
@@ -57,7 +78,7 @@ if __name__ == "__main__":
         """The intrinsic value of a stock with 
                 currentFreeCashPerShare = {}, 
                 freeCashPerShareGrowthRate = {}, 
-                discountedRate = {}, 
+                discountRate = {}, 
                 perpetualGrowthRate={} is {}""".format(
             3.17,
             0.1390,
@@ -77,7 +98,7 @@ if __name__ == "__main__":
         """The intrinsic value of a stock with 
                 currentFreeCashPerShare = {}, 
                 freeCashPerShareGrowthRate = {}, 
-                discountedRate = {}, 
+                discountRate = {}, 
                 perpetualGrowthRate={} is {}""".format(
             385.58,
             0.14,

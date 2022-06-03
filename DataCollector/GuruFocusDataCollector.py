@@ -17,22 +17,24 @@ class GuruFocusDataCollector:
     A class to pull information from https://www.gurufocus.com/
     """
 
+    REQUEST_HEADERS = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+    }
+
     def get_stock_info(self, stock):
         try:
             self.get_wacc(stock)
         except Exception as e:
             logging.error(traceback.format_exc())
         try:
-            self.get_intrinsic_value(stock)
+            self.get_intrinsic_value_based_on_discounted_cash_flow(stock)
         except Exception as e:
             logging.error(traceback.format_exc())
 
     def get_wacc(self, stock):
         url = "https://www.gurufocus.com/term/wacc/NAS:{}/WACC".format(stock.m_symbol)
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
-        }
-        response = requests.get(url, headers=headers)
+
+        response = requests.get(url, headers=self.REQUEST_HEADERS)
         if response.status_code != 200:
             print(response.status_code)
         parser = html.fromstring(response.content)
@@ -48,15 +50,15 @@ class GuruFocusDataCollector:
         # else:
         # print("WACC ratio is not found for stock {}".format(stock.m_symbol))
 
-    def get_intrinsic_value(self, stock):
+    def get_intrinsic_value_based_on_discounted_cash_flow(self, stock):
         self.get_intrinsic_value_for_nasdaq_stock(stock)
         if (
-            stock.m_intrinsic_value is None or stock.m_intrinsic_value == 0
+            not hasattr(stock, "m_intrinsic_value") or stock.m_intrinsic_value == 0
         ):  # This may be a NYSE stock
             self.get_intrinsic_value_for_nyse_stock(stock)
 
     def get_intrinsic_value_for_nasdaq_stock(self, stock):
-        url = "https://www.gurufocus.com/term/iv_dcf_share/NAS:{}/Price-to-Projected-FCF/".format(
+        url = "https://www.gurufocus.com/term/iv_dcf/NAS:{}/Intrinsic-Value".format(
             stock.m_symbol
         )
         self.scraping_intrinsic_value(stock, url)
@@ -68,10 +70,7 @@ class GuruFocusDataCollector:
         self.scraping_intrinsic_value(stock, url)
 
     def scraping_intrinsic_value(self, stock, url):
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
-        }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=self.REQUEST_HEADERS)
         if response.status_code != 200:
             print(response.status_code)
         parser = html.fromstring(response.content)
@@ -85,16 +84,15 @@ class GuruFocusDataCollector:
             stock.m_intrinsic_value = float(intrinsic_value_str)
             if stock.m_intrinsic_value == 0:  # The default value is 0 for this website
                 stock.m_intrinsic_value = None
-        else:
-            print("Intrinsic value is not found for stock {}".format(stock.m_symbol))
 
 
 if __name__ == "__main__":
     dataCollector = GuruFocusDataCollector()
-    stock = Stock()
-    stock.m_symbol = "GOOGL"
-    dataCollector.get_stock_info(stock)
-    print(stock.to_json())
-    stock.m_symbol = "SQ"
-    dataCollector.get_stock_info(stock)
-    print(stock.to_json())
+    google_stock = Stock()
+    google_stock.m_symbol = "GOOGL"
+    dataCollector.get_stock_info(google_stock)
+    print(google_stock.to_json())
+    square_stock = Stock()
+    square_stock.m_symbol = "SQ"
+    dataCollector.get_stock_info(square_stock)
+    print(square_stock.to_json())
