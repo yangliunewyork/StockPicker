@@ -1,5 +1,6 @@
-#!/usr/bin/python
-
+"""
+Base class of all stock investment strategy.
+"""
 
 class StockInvestmentStrategy:
     """

@@ -2,12 +2,12 @@
 
 import sys
 import argparse
-from DataCollector.DataCollectorManager import DataCollectorManager
+from data_collector.data_collector_manager import DataCollectorManager
 
-from Model.Stock import Stock
-from DataCollector.NasdaqDataCollector import NasdaqDataCollector
-from InvestmentStrategy.PersonalStrategy import PersonalStrategy
-from Utils.IntrinsicValueCalculator import IntrinsicValueCalculator
+from model.stock import Stock
+from data_collector.nasdaq_data_collector import NasdaqDataCollector
+from investment_strategy.personal_strategy import PersonalStrategy
+from utils.intrinsic_value_calculator import IntrinsicValueCalculator
 
 
 def calculate_intrinsic_value(stocks):

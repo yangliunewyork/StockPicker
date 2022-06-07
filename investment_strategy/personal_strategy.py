@@ -1,19 +1,30 @@
-#!/usr/bin/python
+"""
+This is a personal investment strategy that can be modified to suit your
+personal investment purposes.
+"""
 
-from InvestmentStrategy.StockInvestmentStrategy import StockInvestmentStrategy
+from investment_strategy.stock_investment_strategy import StockInvestmentStrategy
 
 
 class PersonalStrategy(StockInvestmentStrategy):
     """
-    My personal investment strategy
+    Personal investment strategy.
     """
 
     def recommend_good_stocks(self, stocks):
+        """
+        Return good stocks given the provided stock list.
+
+        Arguments:
+            stocks: A list of Stock instances.
+        Returns:
+            A list of good Stock instances.
+        """
         good_stocks = []
         for stock in stocks:
             if stock.m_intrinsic_value is None or stock.m_price is None:
                 continue
-            if self.is_good_stock(stock):
+            if self._is_good_stock(stock):
                 good_stocks.append(stock)
 
         # Sorting and printing
@@ -22,14 +33,22 @@ class PersonalStrategy(StockInvestmentStrategy):
         )
         return good_stocks
 
-    def is_good_stock(self, stock):
+    def _is_good_stock(self, stock):
+        """
+        Return true if this is a good stock.
+
+        Arguments:
+            stock: A Stock instance.
+        Returns:
+            True if this is a good stock. Otherwise returns False.
+        """
         if stock.m_intrinsic_value is None or stock.m_price is None:
             return False
         stock.m_price_to_intrinsic_value_ratio = stock.m_price / stock.m_intrinsic_value
         return (
-            stock.m_price_to_book_ratio != None
+            stock.m_price_to_book_ratio is not None
             and float(stock.m_price_to_book_ratio) <= 10
-            and stock.m_return_on_equity != None
+            and stock.m_return_on_equity is not None
             and float(stock.m_return_on_equity) >= 0.15
             and stock.m_price_to_intrinsic_value_ratio < 3
         )

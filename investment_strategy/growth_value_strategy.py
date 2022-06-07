@@ -1,19 +1,20 @@
-#!/usr/bin/python
+"""
+Strategy Overview
+The Growth/Value Investor strategy is based on the book "What Works on Wall Street"
+by James P. O'Shaughnessy.In the book, O'Shaughnessy back-tested 44 years of stock market
+data from the comprehensive Standard & Poor's Compustat database to find out which
+strategies work and which don't. To the surprise of many, he concluded that price-to-earnings
+ratios aren't the best indicator of a stock's value, and that small-company stocks,
+contrary to popular wisdom, don't as a group have an edge on large-company stocks.
+Based on his research, O'Shaughnessy developed two key investment strategies: "Cornerstone Growth"
+and "Cornerstone Value", both of which are combined to form this strategy.
+"""
 
-from StockInvestmentStrategy import StockInvestmentStrategy
-
+from investment_strategy.stock_investment_strategy import StockInvestmentStrategy
 
 class GrowthValueStrategy(StockInvestmentStrategy):
     """
-    Strategy Overview
-    The Growth/Value Investor strategy is based on the book "What Works on Wall Street"
-    by James P. O'Shaughnessy.In the book, O'Shaughnessy back-tested 44 years of stock market
-    data from the comprehensive Standard & Poor's Compustat database to find out which
-    strategies work and which don't. To the surprise of many, he concluded that price-to-earnings
-    ratios aren't the best indicator of a stock's value, and that small-company stocks,
-    contrary to popular wisdom, don't as a group have an edge on large-company stocks.
-    Based on his research, O'Shaughnessy developed two key investment strategies: "Cornerstone Growth"
-    and "Cornerstone Value", both of which are combined to form this strategy.
+    Implement growth value strategy.
     """
 
     def market_cap_test(self, stock):

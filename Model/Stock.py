@@ -1,10 +1,12 @@
-#!/usr/bin/python
+"""
+Stores stock information.
+"""
 import json
 
 
 class Stock:
     """
-    Stock information.
+    Stores stock information.
     """
 
     def __init__(self):

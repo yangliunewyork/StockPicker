@@ -1,10 +1,10 @@
-#!/usr/bin/python
-import requests
-import csv
+"""
+NasdaqDataCollector is  class to pull tickers list from Nasdap.
+Nasdap upload tickers information to a text file in their FTP server every day.
+This class login the FTP server and parse the text file to get all the tickers.
+"""
 from ftplib import FTP
 from io import StringIO
-
-from Model.Stock import Stock
 
 
 class NasdaqDataCollector:
@@ -22,8 +22,6 @@ class NasdaqDataCollector:
         ftp = FTP("ftp.nasdaqtrader.com")
         ftp.login()
         ftp.cwd("/SymbolDirectory/")
-        myfiles = ftp.dir()
-        # print (myfiles)
 
         data = StringIO()
         ftp.retrbinary(
@@ -41,5 +39,5 @@ class NasdaqDataCollector:
 
 if __name__ == "__main__":
     nasdaqDataCollector = NasdaqDataCollector()
-    tickers = nasdaqDataCollector.get_tickers()
-    print(tickers)
+    nasdaq_tickers = nasdaqDataCollector.get_tickers()
+    print(nasdaq_tickers)

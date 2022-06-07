@@ -1,16 +1,15 @@
-#!/usr/bin/python
-
-from lxml import html
-import requests
-import re
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-import logging
+"""
+GuruFocusDataCollector is a class to collect information from https://www.gurufocus.com/.
+"""
 import traceback
+import logging
+import re
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+from lxml import html
 
-from Model.Stock import Stock
-
+from model.stock import Stock
 
 class GuruFocusDataCollector:
     """
@@ -18,22 +17,36 @@ class GuruFocusDataCollector:
     """
 
     REQUEST_HEADERS = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)"
+        "AppleWebKit/537.36 (KHTML, like Gecko)"
+        "Chrome/50.0.2661.102"
+        "Safari/537.36"
     }
 
     def get_stock_info(self, stock):
-        try:
-            self.get_wacc(stock)
-        except Exception as e:
-            logging.error(traceback.format_exc())
-        try:
-            self.get_intrinsic_value_based_on_discounted_cash_flow(stock)
-        except Exception as e:
-            logging.error(traceback.format_exc())
+        """
+        Get stock information from https://www.gurufocus.com/.
 
-    def get_wacc(self, stock):
-        url = "https://www.gurufocus.com/term/wacc/NAS:{}/WACC".format(stock.m_symbol)
+        Arguments:
+            stock: A Stock instance.
+        """
+        try:
+            self._get_wacc(stock)
+        except Exception:
+            logging.warning(traceback.format_exc())
+        try:
+            self._get_intrinsic_value_based_on_discounted_cash_flow(stock)
+        except Exception:
+            logging.warning(traceback.format_exc())
 
+    def _get_wacc(self, stock):
+        """
+        Scraping WACC value.
+
+        Arguments:
+            stock: A Stock instance.
+        """
+        url = f"https://www.gurufocus.com/term/wacc/NAS:{stock.m_symbol}/WACC"
         response = requests.get(url, headers=self.REQUEST_HEADERS)
         if response.status_code != 200:
             print(response.status_code)
@@ -50,26 +63,40 @@ class GuruFocusDataCollector:
         # else:
         # print("WACC ratio is not found for stock {}".format(stock.m_symbol))
 
-    def get_intrinsic_value_based_on_discounted_cash_flow(self, stock):
-        self.get_intrinsic_value_for_nasdaq_stock(stock)
+    def _get_intrinsic_value_based_on_discounted_cash_flow(self, stock):
+        """
+        Scraping intrinsic value.
+
+        Arguments:
+            stock: A Stock instance.
+        """
+        self._get_intrinsic_value_for_nasdaq_stock(stock)
         if (
             not hasattr(stock, "m_intrinsic_value") or stock.m_intrinsic_value == 0
         ):  # This may be a NYSE stock
-            self.get_intrinsic_value_for_nyse_stock(stock)
+            self._get_intrinsic_value_for_nyse_stock(stock)
 
-    def get_intrinsic_value_for_nasdaq_stock(self, stock):
-        url = "https://www.gurufocus.com/term/iv_dcf/NAS:{}/Intrinsic-Value".format(
-            stock.m_symbol
-        )
-        self.scraping_intrinsic_value(stock, url)
+    def _get_intrinsic_value_for_nasdaq_stock(self, stock):
+        """
+        Scraping intrinsic value for a Nasdaq stock.
 
-    def get_intrinsic_value_for_nyse_stock(self, stock):
-        url = "https://www.gurufocus.com/term/iv_dcf/NYSE:{}/Intrinsic-Value".format(
-            stock.m_symbol
-        )
-        self.scraping_intrinsic_value(stock, url)
+        Arguments:
+            stock: A Stock instance.
+        """
+        url = f"https://www.gurufocus.com/term/iv_dcf/NAS:{stock.m_symbol}/Intrinsic-Value"
+        self._scraping_intrinsic_value(stock, url)
 
-    def scraping_intrinsic_value(self, stock, url):
+    def _get_intrinsic_value_for_nyse_stock(self, stock):
+        """
+        Scraping intrinsic value for a NYSE stock.
+
+        Arguments:
+            stock: A Stock instance.
+        """
+        url = f"https://www.gurufocus.com/term/iv_dcf/NYSE:{stock.m_symbol}/Intrinsic-Value"
+        self._scraping_intrinsic_value(stock, url)
+
+    def _scraping_intrinsic_value(self, stock, url):
         response = requests.get(url, headers=self.REQUEST_HEADERS)
         if response.status_code != 200:
             print(response.status_code)

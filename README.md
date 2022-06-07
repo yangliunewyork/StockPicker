@@ -119,9 +119,10 @@ pip install .
 #### Run the main script: 
 
 ```
-python ./StockPicker.py -t AAPL AMZN SQ FB TSLA GOOGL // get stock information and pick good stock among them
-python ./StockPicker.py -h // Show help
-python ./StockPicker.py // get all live tickers from Nasdaq and pick good stock among them.
+python ./stock_picker.py -t AAPL AMZN SQ FB TSLA GOOGL // get stock information and pick good stock among them
+python ./stock_picker.py -h // Show help
+python ./stock_picker.py // get all live tickers from Nasdaq and pick good stock among them.
+python ./stock_picker.py 
 ```
 
 #### Run individual script
@@ -139,14 +140,17 @@ Generally, please refer https://google.github.io/styleguide/pyguide.html.
 
 We use `pylint` to check code quality.
 ```
-pylint ./DataCollector
+pylint ./data_collector
+pylint ./utils
+pylint ./model
+pylint ./investment_strategy
 ```
 
  We use [black](https://github.com/psf/black) to auto format the code.
 
 ```
-black ./DataCollector
-black ./Utils
-black ./Model
-black ./InvestmentStrategy
+black ./data_collector
+black ./utils
+black ./model
+black ./investment_strategy
 ``` 
