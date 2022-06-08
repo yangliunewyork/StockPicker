@@ -70,33 +70,10 @@ class GuruFocusDataCollector:
         Arguments:
             stock: A Stock instance.
         """
-        self._get_intrinsic_value_for_nasdaq_stock(stock)
-        if (
-            not hasattr(stock, "m_intrinsic_value") or stock.m_intrinsic_value == 0
-        ):  # This may be a NYSE stock
-            self._get_intrinsic_value_for_nyse_stock(stock)
+        self._scraping_intrinsic_value(stock)
 
-    def _get_intrinsic_value_for_nasdaq_stock(self, stock):
-        """
-        Scraping intrinsic value for a Nasdaq stock.
-
-        Arguments:
-            stock: A Stock instance.
-        """
-        url = f"https://www.gurufocus.com/term/iv_dcf/NAS:{stock.m_symbol}/Intrinsic-Value"
-        self._scraping_intrinsic_value(stock, url)
-
-    def _get_intrinsic_value_for_nyse_stock(self, stock):
-        """
-        Scraping intrinsic value for a NYSE stock.
-
-        Arguments:
-            stock: A Stock instance.
-        """
-        url = f"https://www.gurufocus.com/term/iv_dcf/NYSE:{stock.m_symbol}/Intrinsic-Value"
-        self._scraping_intrinsic_value(stock, url)
-
-    def _scraping_intrinsic_value(self, stock, url):
+    def _scraping_intrinsic_value(self, stock):
+        url = f"https://www.gurufocus.com/term/iv_dcf/{stock.m_symbol}/Intrinsic-Value-DCF-FCF-Based/"
         response = requests.get(url, headers=self.REQUEST_HEADERS)
         if response.status_code != 200:
             print(response.status_code)
@@ -123,3 +100,7 @@ if __name__ == "__main__":
     square_stock.m_symbol = "SQ"
     dataCollector.get_stock_info(square_stock)
     print(square_stock.to_json())
+    evr_stock = Stock()
+    evr_stock.m_symbol = "EVR"
+    dataCollector.get_stock_info(evr_stock)
+    print(evr_stock.to_json())

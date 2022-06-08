@@ -129,8 +129,10 @@ python ./stock_picker.py
 
 Any python file that has `__main__` function means it can be run independently.
 
+However, you need to run `python setup.py install` first.
+
 ```
-python DataCollector/GuruFocusDataCollector.py
+python data_collector/guru_focus_data_collector.py
 ```
 
 # Code Style

@@ -63,7 +63,7 @@ def main(argv):
     personal_strategy = PersonalStrategy()
     good_stocks = personal_strategy.recommend_good_stocks(stocks)
     print("{} of good stocks are recommended: ".format(str(len(good_stocks))))
-    f = open("goodstocks.txt", "a")
+    f = open("goodstocks.txt", "w")
     for stock in good_stocks:
         f.write(stock.to_json())
     f.close()
