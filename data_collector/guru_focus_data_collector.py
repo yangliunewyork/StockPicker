@@ -85,9 +85,9 @@ class GuruFocusDataCollector:
         if match:
             intrinsic_value_str = match.group(0).replace(",", "")
             # print (intrinsic_value_str)
-            stock.m_intrinsic_value = float(intrinsic_value_str)
-            if stock.m_intrinsic_value == 0:  # The default value is 0 for this website
-                stock.m_intrinsic_value = None
+            stock.m_valuation_data.m_intrinsic_value_by_gurufocus = float(intrinsic_value_str)
+            if stock.m_valuation_data.m_intrinsic_value_by_gurufocus == 0:  # The default value is 0 for this website
+                stock.m_valuation_data.m_intrinsic_value_by_gurufocus = None
 
 
 if __name__ == "__main__":

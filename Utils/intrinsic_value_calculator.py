@@ -7,15 +7,15 @@ class IntrinsicValueCalculator:
     """
     def calculate_intrinsic_value_based_on_discounted_cash_flow(
         self,
-        current_free_cash_per_share,
+        free_flow_cash_per_share,
         free_cash_per_share_growth_rate,
         discount_rate,  # probably should be WACC
         perpetual_growth_rate,  # Should be conservative, so probably choose inflation rate
     ):
         """
         Args:
-            current_free_cash_per_share: The average free cash per share of
-                the company for the last x years.
+            free_flow_cash_per_share: Current free cash flow per share. 
+                Some people use average free cash per share of the last x years.
             free_cash_per_share_growth_rate: The average free cash per share growth rate
                 of the company for the last x years.
             discount_rate:  The rate of return used to determine the
@@ -31,13 +31,13 @@ class IntrinsicValueCalculator:
         # Calculate discounted cash flow of the next x years.
         discounted_cash_flow = 0
         for year in range(1, 10):
-            cash_flow_at_the_year = current_free_cash_per_share * (
+            cash_flow_at_the_year = free_flow_cash_per_share * (
                 pow((1 + free_cash_per_share_growth_rate), year)
             )
             discounted_cash_flow += cash_flow_at_the_year / (pow((1 + discount_rate), year))
 
         # Use Perpetuity Method to calculate the terminal value at x-th year.
-        cash_flow_of_last_year = current_free_cash_per_share * (
+        cash_flow_of_last_year = free_flow_cash_per_share * (
             pow((1 + free_cash_per_share_growth_rate), 10)
         )
         terminal_value = (

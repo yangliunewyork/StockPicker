@@ -3,6 +3,7 @@ Stores stock information.
 """
 import json
 
+from model.stock_valuation_data import StockValuationData
 
 class Stock:
     """
@@ -23,10 +24,6 @@ class Stock:
         self.m_total_liabilities = None
         self.m_equity_per_share = None
         self.m_total_outstanding_shares = None
-        # Cash flow
-        self.m_cash_flow_per_share = (
-            None  # Probably should be deprecated by m_free_cash_flow_per_share
-        )
         self.m_free_cash_flow_per_share = None
         self.m_free_cash_flow_per_share_growth_rate = None
         # Ratios
@@ -39,10 +36,9 @@ class Stock:
         self.m_peg_ratio = None
         self.m_weighted_average_cost_of_capital_ratio = None
 
-        # This value will be calculated and not get from any data source,
-        # so probably should not be a field here.
-        # For now, keep it here to make it simple.
-        self.m_intrinsic_value = None
+        # Valuation data
+        self.m_price_to_intrinsic_value_ratio = None
+        self.m_valuation_data = StockValuationData()
 
     def to_json(self):
         """

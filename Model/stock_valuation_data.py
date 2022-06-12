@@ -11,9 +11,8 @@ class StockValuationData:
 
     def __init__(self):
         # Basics
-        self.m_symbol = None
-        self.m_price = None
-        self.m_intrinsic_value = None
+        self.m_intrinsic_value_by_dcf = None
+        self.m_intrinsic_value_by_gurufocus = None
 
     def to_json(self):
         """

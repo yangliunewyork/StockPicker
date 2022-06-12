@@ -22,7 +22,8 @@ class PersonalStrategy(StockInvestmentStrategy):
         """
         good_stocks = []
         for stock in stocks:
-            if stock.m_intrinsic_value is None or stock.m_price is None:
+            if stock.m_valuation_data.m_intrinsic_value_by_gurufocus is None or stock.m_price is None:
+                print (stock.m_valuation_data.m_intrinsic_value_by_gurufocus)
                 continue
             if self._is_good_stock(stock):
                 good_stocks.append(stock)
@@ -42,13 +43,11 @@ class PersonalStrategy(StockInvestmentStrategy):
         Returns:
             True if this is a good stock. Otherwise returns False.
         """
-        if stock.m_intrinsic_value is None or stock.m_price is None:
-            return False
-        stock.m_price_to_intrinsic_value_ratio = stock.m_price / stock.m_intrinsic_value
+        stock.m_price_to_intrinsic_value_ratio = stock.m_price / stock.m_valuation_data.m_intrinsic_value_by_gurufocus
         return (
             stock.m_price_to_book_ratio is not None
             and float(stock.m_price_to_book_ratio) <= 10
             and stock.m_return_on_equity is not None
             and float(stock.m_return_on_equity) >= 0.15
-            and stock.m_price_to_intrinsic_value_ratio < 3
+            and stock.m_price_to_intrinsic_value_ratio < 2
         )
