@@ -18,7 +18,6 @@ class YahooFinanceDataCollector:
         print(f"Getting stock information for {stock.m_symbol} ...")
         # yahoostock_info = Share(symbol)
         stock_info = yf.Ticker(stock.m_symbol)
-        # print (stock_info.info)
         if "shortName" in stock_info.info:
             stock.m_company_name = stock_info.info["shortName"]
         if "currentPrice" in stock_info.info:
@@ -33,6 +32,8 @@ class YahooFinanceDataCollector:
             stock.m_cash_per_share = stock_info.info["totalCashPerShare"]
         if "profitMargins" in stock_info.info:
             stock.m_profit_margin = stock_info.info["profitMargins"]
+        if "currentRatio" in stock_info.info:
+            stock.m_current_ratio = stock_info.info["currentRatio"]
         if "marketCap" in stock_info.info:
             stock.m_market_cap = stock_info.info["marketCap"]
         if "returnOnAssets" in stock_info.info:
