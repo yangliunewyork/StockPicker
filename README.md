@@ -121,8 +121,15 @@ pip install .
 ```
 python ./stock_picker.py -t AAPL AMZN SQ FB TSLA GOOGL // get stock information and pick good stock among them
 python ./stock_picker.py -h // Show help
+python ./stock_picker.py -tf Tickers.txt  // Read tickers from a text file
 python ./stock_picker.py // get all live tickers from Nasdaq and pick good stock among them.
 python ./stock_picker.py 
+```
+
+You can also use some online screener such as https://finviz.com/screener.ashx?v=121&f=fa_opermargin_high,fa_pb_u2,fa_pfcf_u15,fa_roa_o20,geo_usa&ft=2&o=pb to get tickers and store in a text file, and then run command like this:
+
+```
+python ./stock_picker.py -tf Tickers.txt 
 ```
 
 #### Run individual script
