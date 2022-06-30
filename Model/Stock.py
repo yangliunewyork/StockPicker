@@ -26,6 +26,9 @@ class Stock:
         self.m_total_outstanding_shares = None
         self.m_free_cash_flow_per_share = None
         self.m_free_cash_flow_per_share_growth_rate = None
+        # Health
+        self.m_current_ratio = None
+        self.m_debt_to_equity = None
         # Ratios
         self.m_profit_margin = None
         self.m_price_to_book_ratio = None

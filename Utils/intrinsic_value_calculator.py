@@ -7,17 +7,18 @@ class IntrinsicValueCalculator:
     """
     def calculate_intrinsic_value_based_on_discounted_cash_flow(
         self,
-        free_flow_cash_per_share,
-        free_cash_per_share_growth_rate,
-        discount_rate,  # probably should be WACC
-        perpetual_growth_rate,  # Should be conservative, so probably choose inflation rate
+        current_free_cash_flow_per_share,
+        free_cash_flow_per_share_growth_rate,
+        projected_number_of_years,
+        discount_rate, 
+        perpetual_growth_rate,
     ):
         """
         Args:
-            free_flow_cash_per_share: Current free cash flow per share. 
-                Some people use average free cash per share of the last x years.
+            current_free_cash_flow_per_share: Current free cash flow per share. 
             free_cash_per_share_growth_rate: The average free cash per share growth rate
                 of the company for the last x years.
+            projected_number_of_years: Typically, a target’s FCF is projected out 5 to 10 years in the future.
             discount_rate:  The rate of return used to determine the
                 present value of future cash flows. Corporations often use the
                 Weighted Average Cost of Capital (WACC).
@@ -30,15 +31,15 @@ class IntrinsicValueCalculator:
 
         # Calculate discounted cash flow of the next x years.
         discounted_cash_flow = 0
-        for year in range(1, 10):
-            cash_flow_at_the_year = free_flow_cash_per_share * (
-                pow((1 + free_cash_per_share_growth_rate), year)
+        for year in range(1, projected_number_of_years):
+            cash_flow_at_the_year = current_free_cash_flow_per_share * (
+                pow((1 + free_cash_flow_per_share_growth_rate), year)
             )
             discounted_cash_flow += cash_flow_at_the_year / (pow((1 + discount_rate), year))
 
         # Use Perpetuity Method to calculate the terminal value at x-th year.
-        cash_flow_of_last_year = free_flow_cash_per_share * (
-            pow((1 + free_cash_per_share_growth_rate), 10)
+        cash_flow_of_last_year = current_free_cash_flow_per_share * (
+            pow((1 + free_cash_flow_per_share_growth_rate), projected_number_of_years)
         )
         terminal_value = (
             cash_flow_of_last_year
@@ -46,7 +47,7 @@ class IntrinsicValueCalculator:
             / (discount_rate - perpetual_growth_rate)
         )
         discounted_terminal_value = terminal_value / pow(
-            (1 + free_cash_per_share_growth_rate), 10
+            (1 + free_cash_flow_per_share_growth_rate), projected_number_of_years
         )
 
         current_intrinsic_value = discounted_cash_flow + discounted_terminal_value

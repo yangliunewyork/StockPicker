@@ -49,5 +49,7 @@ class PersonalStrategy(StockInvestmentStrategy):
             and float(stock.m_price_to_book_ratio) <= 10
             and stock.m_return_on_equity is not None
             and float(stock.m_return_on_equity) >= 0.15
+            and stock.m_debt_to_equity is not None
+            and float(stock.m_debt_to_equity) <= 2
             and stock.m_price_to_intrinsic_value_ratio < 2
         )
