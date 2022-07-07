@@ -126,7 +126,7 @@ python ./stock_picker.py // get all live tickers from Nasdaq and pick good stock
 python ./stock_picker.py 
 ```
 
-You can also use some online screener such as https://finviz.com/screener.ashx?v=121&f=fa_opermargin_high,fa_pb_u2,fa_pfcf_u15,fa_roa_o20,geo_usa&ft=2&o=pb to get tickers and store in a text file, and then run command like this:
+You can also use some online screener such as https://finviz.com/screener.ashx?v=121&f=fa_curratio_o1,fa_debteq_low,fa_netmargin_o10,fa_opermargin_high,fa_pe_low,fa_pfcf_low,fa_roa_o20,fa_sales5years_pos,geo_usa&ft=2&o=pbto get tickers and store in a text file, and then run command like this:
 
 ```
 python ./stock_picker.py -tf Tickers.txt 
