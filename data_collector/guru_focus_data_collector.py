@@ -33,11 +33,11 @@ class GuruFocusDataCollector:
         try:
             self._get_wacc(stock)
         except Exception:
-            logging.warning(traceback.format_exc())
+            logging.info(traceback.format_exc())
         try:
             self._get_intrinsic_value_based_on_discounted_cash_flow(stock)
         except Exception:
-            logging.warning(traceback.format_exc())
+            logging.info(traceback.format_exc())
 
     def _get_wacc(self, stock):
         """
@@ -54,7 +54,6 @@ class GuruFocusDataCollector:
         innter_text = parser.xpath('//div[@id="def_body_detail_height"]/font')[
             0
         ].text_content()
-        # print (innter_text)
         match = re.search(r"(\d+(\.\d+)?%)", innter_text)
         if match:
             wacc_ratio_str = match.group(0)

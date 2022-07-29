@@ -1,12 +1,19 @@
 # StockPicker
 
-This is a Python script which queries Yahoo Finance API and recommend top 10 stocks for that day based on predefined strategies.
+This is a Python script which queries stock information from different websites/data sources and rank stocks based on predefined strategies.
 
 The script works like this:
 
-* Step 1: get all tickers as of today. Right now we get from Nasdaq FTP.
+* Step 1: Get a list of tickers from a local file or command line or from default Nasdaq FTP.
 * Step 2: call Yahoo Finance to get fundamental information. We are using yfinance library for that.
-* Step 3: Apply investment strategy to pick good tickers.
+* Step 3: scrape information from different websites/data sources.
+* Step 4: Apply investment strategy to pick good tickers. The good tickers will be stored in `goodstocks.txt` file.
+
+The script is not fast due to that `yfinance` has an internal rate limit control. 
+
+Most websites have rate limit control as well, so our script will never be fast. But, it doesn't matter as good stock doesn't change to bad stock within one day.
+
+__Note: the script is just for fun and provide some basic info. You have to take a holistic view of the company before making any investment.__
 
 # Pre-Setup
 
@@ -98,11 +105,13 @@ pyenv deactivate // Exit the virtual environment
 
 #### Run the main script: 
 
+Try these commands to feel how the script works:
+
 ```
-python ./stock_picker.py -t AAPL AMZN SQ FB TSLA GOOGL // get stock information and pick good stock among them
+python ./stock_picker.py -tf Tickers.txt // Read tickers from a text file
+python ./stock_picker.py -t AAPL AMZN SQ FB TSLA GOOGL // Read tickers from command line.
 python ./stock_picker.py -h // Show help
-python ./stock_picker.py -tf Tickers.txt  // Read tickers from a text file
-python ./stock_picker.py // get all live tickers from Nasdaq and pick good stock among them.
+python ./stock_picker.py // By default, get tickers from Nasdaq
 python ./stock_picker.py 
 ```
 
