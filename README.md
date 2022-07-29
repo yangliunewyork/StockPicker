@@ -10,7 +10,7 @@ The script works like this:
 
 # Pre-Setup
 
-# How to setup a good Python environment for macOS
+## How to setup a good Python environment for macOS
 
 ### Step 1. install pyenv
 
@@ -87,34 +87,14 @@ pyenv virtualenvs // List all the virtual environments
 pyenv uninstall my-virtual-env // Delete the virtual environment
 ```
 
+# Run 
 
-# Development
-
-### To enter/exit virtual environment: 
+To enter/exit virtual environment: 
 
 ```
 pyenv activate my-virtual-env // Enter the virtual environment
 pyenv deactivate // Exit the virtual environment
 ```
-
-### To install/uninstall package:
-
-```
-pip install <PackageName>
-pip uninstall <PackageName>
-```
-
-`pip freeze > requirements.txt ` can be used to generate `requirements.txt`.
-
-### Local module manage
-
-We followed https://packaging.python.org/en/latest/guides/packaging-namespace-packages/#native-namespace-packages to setup the modules.
-
-```
-pip install . 
-```
-
-### Run 
 
 #### Run the main script: 
 
@@ -141,6 +121,27 @@ However, you need to run `python setup.py install` first.
 ```
 python data_collector/guru_focus_data_collector.py
 ```
+
+# Development
+
+
+### To install/uninstall package:
+
+```
+pip install <PackageName>
+pip uninstall <PackageName>
+```
+
+`pip freeze > requirements.txt ` can be used to generate `requirements.txt`.
+
+### Local module manage
+
+We followed https://packaging.python.org/en/latest/guides/packaging-namespace-packages/#native-namespace-packages to setup the modules.
+
+```
+pip install . 
+```
+
 
 # Code Style
 
