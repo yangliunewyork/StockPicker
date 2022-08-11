@@ -87,7 +87,7 @@ Add this line `eval "$(pyenv virtualenv-init -)"` to `~/.zshrc` if you are using
 Some useful commmands:
 
 ```
-pyenv virtualenv 3.7.3 my-virtual-env // Create a new virtual environment my-virtual-env
+pyenv virtualenv 3.10.3 my-virtual-env // Create a new virtual environment my-virtual-env
 pyenv activate my-virtual-env // Enter the virtual environment
 pyenv deactivate // Exit the virtual environment
 pyenv virtualenvs // List all the virtual environments
