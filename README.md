@@ -115,7 +115,7 @@ python ./stock_picker.py // By default, get tickers from Nasdaq
 python ./stock_picker.py 
 ```
 
-You can also use some online screener such as https://finviz.com/screener.ashx?v=121&f=fa_curratio_o1,fa_debteq_low,fa_netmargin_o10,fa_opermargin_high,fa_pe_low,fa_pfcf_low,fa_roa_o20,fa_sales5years_pos,geo_usa&ft=2&o=pbto get tickers and store in a text file, and then run command like this:
+You can also use some online screener such as https://finviz.com/screener.ashx?v=121&f=fa_curratio_o1,fa_debteq_u0.7,fa_eps5years_pos,fa_epsyoy_pos,fa_grossmargin_pos,fa_netmargin_o10,fa_opermargin_high,fa_pe_u25,fa_peg_u2,fa_pfcf_low,fa_quickratio_o1,fa_roa_o20,fa_roe_pos,fa_roi_pos,fa_sales5years_pos,geo_usa&ft=2 get tickers and store in a text file, and then run command like this:
 
 ```
 python ./stock_picker.py -tf Tickers.txt 
