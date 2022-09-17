@@ -38,6 +38,14 @@ class GuruFocusDataCollector:
             self._get_intrinsic_value_based_on_discounted_cash_flow(stock)
         except Exception:
             logging.info(traceback.format_exc())
+        try:
+            self._scraping_free_cashflow_per_share(stock)
+        except Exception:
+            logging.info(traceback.format_exc())
+        try:
+            self._scraping_price_to_free_cash_flow_per_share(stock)
+        except Exception:
+            logging.info(traceback.format_exc())
 
     def _get_wacc(self, stock):
         """
@@ -87,6 +95,41 @@ class GuruFocusDataCollector:
             stock.m_valuation_data.m_intrinsic_value_by_gurufocus = float(intrinsic_value_str)
             if stock.m_valuation_data.m_intrinsic_value_by_gurufocus == 0:  # The default value is 0 for this website
                 stock.m_valuation_data.m_intrinsic_value_by_gurufocus = None
+
+    def _scraping_free_cashflow_per_share(self, stock):
+        url = f"https://www.gurufocus.com/term/per+share_freecashflow/{stock.m_symbol}/Free-Cash-Flow-per-Share/"
+        response = requests.get(url, headers=self.REQUEST_HEADERS)
+        if response.status_code != 200:
+            print(response.status_code)
+        parser = html.fromstring(response.content)
+        inner_text = parser.xpath('//div[@id="def_body_detail_height"]/font')[
+            0
+        ].text_content()
+        match = re.search(r"\d{1,3}(,\d{3})*(\.\d+)?", inner_text)
+        if match:
+            free_cashflow_per_share_str = match.group(0).replace(",", "")
+            #print (float(free_cashflow_per_share_str))
+            stock.m_free_cash_flow_per_share = float(free_cashflow_per_share_str)
+            if stock.m_free_cash_flow_per_share == 0:  # The default value is 0 for this website
+                stock.m_free_cash_flow_per_share = None
+
+    def _scraping_price_to_free_cash_flow_per_share(self, stock):
+        url = f"https://www.gurufocus.com/term/pfcf/{stock.m_symbol}/Price-to-Free-Cash-Flow/"
+        response = requests.get(url, headers=self.REQUEST_HEADERS)
+        if response.status_code != 200:
+            print(response.status_code)
+        parser = html.fromstring(response.content)
+        inner_text = parser.xpath('//div[@id="def_body_detail_height"]/font')[
+            0
+        ].text_content()
+        match = re.search(r"\d{1,3}(,\d{3})*(\.\d+)?", inner_text)
+        if match:
+            price_to_free_cash_flow_per_share_str = match.group(0).replace(",", "")
+            #print (float(price_to_free_cash_flow_per_share_str))
+            stock.m_price_to_free_cash_flow_per_share= float(price_to_free_cash_flow_per_share_str)
+            if stock.m_price_to_free_cash_flow_per_share == 0:  # The default value is 0 for this website
+                stock.m_price_to_free_cash_flow_per_share = None
+
 
 
 if __name__ == "__main__":

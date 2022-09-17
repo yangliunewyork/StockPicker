@@ -38,7 +38,8 @@ class Stock:
         self.m_return_on_capital = None
         self.m_peg_ratio = None
         self.m_weighted_average_cost_of_capital_ratio = None
-
+        self.m_price_to_free_cash_flow_per_share = None
+        
         # Valuation data
         self.m_price_to_intrinsic_value_ratio = None
         self.m_valuation_data = StockValuationData()
