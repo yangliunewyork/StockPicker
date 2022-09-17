@@ -6,10 +6,12 @@ import logging
 import re
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from lxml import html
 
 from model.stock import Stock
+
 
 class GuruFocusDataCollector:
     """
@@ -92,8 +94,12 @@ class GuruFocusDataCollector:
         if match:
             intrinsic_value_str = match.group(0).replace(",", "")
             # print (intrinsic_value_str)
-            stock.m_valuation_data.m_intrinsic_value_by_gurufocus = float(intrinsic_value_str)
-            if stock.m_valuation_data.m_intrinsic_value_by_gurufocus == 0:  # The default value is 0 for this website
+            stock.m_valuation_data.m_intrinsic_value_by_gurufocus = float(
+                intrinsic_value_str
+            )
+            if (
+                stock.m_valuation_data.m_intrinsic_value_by_gurufocus == 0
+            ):  # The default value is 0 for this website
                 stock.m_valuation_data.m_intrinsic_value_by_gurufocus = None
 
     def _scraping_free_cashflow_per_share(self, stock):
@@ -108,9 +114,11 @@ class GuruFocusDataCollector:
         match = re.search(r"\d{1,3}(,\d{3})*(\.\d+)?", inner_text)
         if match:
             free_cashflow_per_share_str = match.group(0).replace(",", "")
-            #print (float(free_cashflow_per_share_str))
+            # print (float(free_cashflow_per_share_str))
             stock.m_free_cash_flow_per_share = float(free_cashflow_per_share_str)
-            if stock.m_free_cash_flow_per_share == 0:  # The default value is 0 for this website
+            if (
+                stock.m_free_cash_flow_per_share == 0
+            ):  # The default value is 0 for this website
                 stock.m_free_cash_flow_per_share = None
 
     def _scraping_price_to_free_cash_flow_per_share(self, stock):
@@ -125,11 +133,14 @@ class GuruFocusDataCollector:
         match = re.search(r"\d{1,3}(,\d{3})*(\.\d+)?", inner_text)
         if match:
             price_to_free_cash_flow_per_share_str = match.group(0).replace(",", "")
-            #print (float(price_to_free_cash_flow_per_share_str))
-            stock.m_price_to_free_cash_flow_per_share= float(price_to_free_cash_flow_per_share_str)
-            if stock.m_price_to_free_cash_flow_per_share == 0:  # The default value is 0 for this website
+            # print (float(price_to_free_cash_flow_per_share_str))
+            stock.m_price_to_free_cash_flow_per_share = float(
+                price_to_free_cash_flow_per_share_str
+            )
+            if (
+                stock.m_price_to_free_cash_flow_per_share == 0
+            ):  # The default value is 0 for this website
                 stock.m_price_to_free_cash_flow_per_share = None
-
 
 
 if __name__ == "__main__":

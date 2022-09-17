@@ -12,6 +12,7 @@ and "Cornerstone Value", both of which are combined to form this strategy.
 
 from investment_strategy.stock_investment_strategy import StockInvestmentStrategy
 
+
 class GrowthValueStrategy(StockInvestmentStrategy):
     """
     Implement growth value strategy.

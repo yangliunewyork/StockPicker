@@ -1,21 +1,24 @@
 """
 A module for intrinsic value calculation.
 """
+
+
 class IntrinsicValueCalculator:
     """
     A utility class that provides different ways of calculating intrinsic value.
     """
+
     def calculate_intrinsic_value_based_on_discounted_cash_flow(
         self,
         current_free_cash_flow_per_share,
         free_cash_flow_per_share_growth_rate,
         projected_number_of_years,
-        discount_rate, 
+        discount_rate,
         perpetual_growth_rate,
     ):
         """
         Args:
-            current_free_cash_flow_per_share: Current free cash flow per share. 
+            current_free_cash_flow_per_share: Current free cash flow per share.
             free_cash_per_share_growth_rate: The average free cash per share growth rate
                 of the company for the last x years.
             projected_number_of_years: Typically, a target’s FCF is projected out 5 to 10 years in the future.
@@ -35,7 +38,9 @@ class IntrinsicValueCalculator:
             cash_flow_at_the_year = current_free_cash_flow_per_share * (
                 pow((1 + free_cash_flow_per_share_growth_rate), year)
             )
-            discounted_cash_flow += cash_flow_at_the_year / (pow((1 + discount_rate), year))
+            discounted_cash_flow += cash_flow_at_the_year / (
+                pow((1 + discount_rate), year)
+            )
 
         # Use Perpetuity Method to calculate the terminal value at x-th year.
         cash_flow_of_last_year = current_free_cash_flow_per_share * (
@@ -58,7 +63,7 @@ class IntrinsicValueCalculator:
         current_book_value_per_share,
         book_value_growth_rate,
         num_of_years,
-        ten_year_treasury_rate
+        ten_year_treasury_rate,
     ):
         """
         Args:
@@ -85,10 +90,8 @@ class IntrinsicValueCalculator:
 
 if __name__ == "__main__":
     intrinsic_value_calculator = IntrinsicValueCalculator()
-    intrinsic_value = (
-        intrinsic_value_calculator.calculate_intrinsic_value_based_on_discounted_cash_flow(
-            3.17, 0.1390, 0.076, 0.02
-        )
+    intrinsic_value = intrinsic_value_calculator.calculate_intrinsic_value_based_on_discounted_cash_flow(
+        3.17, 0.1390, 0.076, 0.02
     )
     print(
         f"""The intrinsic value of a stock with
@@ -115,5 +118,4 @@ if __name__ == "__main__":
                         385.58, 0.14, 0.076, 0.02)
                 }
         """
-        
     )

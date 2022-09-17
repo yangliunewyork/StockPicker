@@ -4,9 +4,11 @@ GuruFocusDataCollector is a class to collect information from https://stockanaly
 from lxml import html
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 from model.stock import Stock
+
 
 class StockAnalysisWebsiteDataCollector:
     """

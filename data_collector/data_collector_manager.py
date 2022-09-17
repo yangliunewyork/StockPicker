@@ -11,6 +11,7 @@ from data_collector.yahoo_finance_data_collector import YahooFinanceDataCollecto
 from data_collector.guru_focus_data_collector import GuruFocusDataCollector
 from model.stock import Stock
 
+
 class DataCollectorManager:
     """
     A class to manage data collectors, and provide API to return information
@@ -36,8 +37,8 @@ class DataCollectorManager:
         """
         Call different data collectors to popuplate Stock instances' fields.
         """
-        #tread_pool = ThreadPool(6)
-        #stocks = tread_pool.map(self._call_data_collectors_for_stock, stocks)
+        # tread_pool = ThreadPool(6)
+        # stocks = tread_pool.map(self._call_data_collectors_for_stock, stocks)
         for stock in alive_it(stocks):
             self._call_data_collectors_for_stock(stock)
 
@@ -53,12 +54,13 @@ class DataCollectorManager:
         # time.sleep(sleep_time)
         # print ("Sleep {} seoncds to avoid being blocked by website".format(sleep_time))
 
+
 if __name__ == "__main__":
     data_collector_manager = DataCollectorManager()
     evr_stock = Stock()
     evr_stock.m_symbol = "EVR"
     stocks = []
-    stocks.append(evr_stock);
+    stocks.append(evr_stock)
     data_collector_manager.gather_stock_information(stocks)
     for stock in stocks:
         print(stock.to_json())

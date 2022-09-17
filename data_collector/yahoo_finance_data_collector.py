@@ -5,6 +5,7 @@ import yfinance as yf
 
 from model.stock import Stock
 
+
 class YahooFinanceDataCollector:
     """
     A class to pull information from Yahoo Finance
@@ -18,7 +19,7 @@ class YahooFinanceDataCollector:
         print(f"Getting stock information for {stock.m_symbol} ...")
         # yahoostock_info = Share(symbol)
         stock_info = yf.Ticker(stock.m_symbol)
-        #print (stock_info.info)
+        # print (stock_info.info)
         if "shortName" in stock_info.info:
             stock.m_company_name = stock_info.info["shortName"]
         if "currentPrice" in stock_info.info:
@@ -35,7 +36,10 @@ class YahooFinanceDataCollector:
             stock.m_profit_margin = stock_info.info["profitMargins"]
         if "currentRatio" in stock_info.info:
             stock.m_current_ratio = stock_info.info["currentRatio"]
-        if "debtToEquity" in stock_info.info and stock_info.info["debtToEquity"] is not None:
+        if (
+            "debtToEquity" in stock_info.info
+            and stock_info.info["debtToEquity"] is not None
+        ):
             stock.m_debt_to_equity = stock_info.info["debtToEquity"] / 100
         if "marketCap" in stock_info.info:
             stock.m_market_cap = stock_info.info["marketCap"]
