@@ -7,7 +7,9 @@ The script works like this:
 * Step 1: Get a list of tickers from a local file or command line or from default Nasdaq FTP.
 * Step 2: call Yahoo Finance to get fundamental information. We are using yfinance library for that.
 * Step 3: scrape information from different websites/data sources.
-* Step 4: Apply investment strategy to pick good tickers. The good tickers will be stored in `goodstocks.txt` file.
+* Step 4: Save stocks infomation to `stocks.csv` file.
+
+You can run `jupyter notebook` to launch the jupyter server and play with the stocks in a web-based interactive notebook called `StocksAnalysis.ipynb`.
 
 `data_collector` is the folder which store data collectors for different APIs/websites. Whenver you need scrap a new website/API, just add a data collecto for it. Stock information will be stored in instance of `Stock` model which defined in `Stock.py`.
 
