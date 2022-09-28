@@ -43,7 +43,18 @@ class Stock:
 
         # Valuation data
         self.m_price_to_intrinsic_value_ratio = None
-        self.m_valuation_data = StockValuationData()
+        self.m_intrinsic_value_by_dcf = None
+        self.m_intrinsic_value_by_gurufocus = None
+
+    def get_stock_attributes(self):
+        """
+        Return stock attributes.
+        """
+        attributes = []
+        for attribute in dir(self):
+            if attribute.startswith('m_'):
+                    attributes.append(attribute)
+        return attributes
 
     def to_json(self):
         """

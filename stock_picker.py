@@ -2,8 +2,10 @@
 
 import sys
 import argparse
-from data_collector.data_collector_manager import DataCollectorManager
+import logging
+import csv
 
+from data_collector.data_collector_manager import DataCollectorManager
 from model.stock import Stock
 from data_collector.nasdaq_data_collector import NasdaqDataCollector
 from investment_strategy.personal_strategy import PersonalStrategy
@@ -27,6 +29,17 @@ def calculate_intrinsic_value(stocks):
                     perpetualGrowthRate,
                 )
 
+def write_stocks_to_csv(stocks):
+    stock_attributes = stocks[0].get_stock_attributes()
+    with open('stocks.csv', 'w',) as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(stock_attributes)
+        for stock in stocks:
+            row = []
+            for attribute in stock_attributes:
+                row.append(getattr(stock, attribute))
+            writer.writerow(row)  
+
 
 def main(argv):
     argumentParser = argparse.ArgumentParser(description="Command list.")
@@ -44,7 +57,7 @@ def main(argv):
     if args.tickers:
         tickers = args.tickers
     elif args.tickers_file:
-        print("Getting tickers from file {}".format(args.tickers_file))
+        logging.info("Getting tickers from file {}".format(args.tickers_file))
         with open(args.tickers_file) as file:
             lines = file.readlines()
             tickers = [line.rstrip() for line in lines]
@@ -60,13 +73,8 @@ def main(argv):
 
     dataCollectorManager.gather_stock_information(stocks)
 
-    personal_strategy = PersonalStrategy()
-    good_stocks = personal_strategy.recommend_good_stocks(stocks)
-    print("{} of good stocks are recommended: ".format(str(len(good_stocks))))
-    f = open("goodstocks.txt", "w")
-    for stock in good_stocks:
-        f.write(stock.to_json())
-    f.close()
+    write_stocks_to_csv(stocks)
+
     exit(0)
 
 

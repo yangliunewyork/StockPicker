@@ -94,13 +94,13 @@ class GuruFocusDataCollector:
         if match:
             intrinsic_value_str = match.group(0).replace(",", "")
             # print (intrinsic_value_str)
-            stock.m_valuation_data.m_intrinsic_value_by_gurufocus = float(
+            stock.m_intrinsic_value_by_gurufocus = float(
                 intrinsic_value_str
             )
             if (
-                stock.m_valuation_data.m_intrinsic_value_by_gurufocus == 0
+                stock.m_intrinsic_value_by_gurufocus == 0
             ):  # The default value is 0 for this website
-                stock.m_valuation_data.m_intrinsic_value_by_gurufocus = None
+                stock.m_intrinsic_value_by_gurufocus = None
 
     def _scraping_free_cashflow_per_share(self, stock):
         url = f"https://www.gurufocus.com/term/per+share_freecashflow/{stock.m_symbol}/Free-Cash-Flow-per-Share/"

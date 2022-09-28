@@ -23,10 +23,10 @@ class PersonalStrategy(StockInvestmentStrategy):
         good_stocks = []
         for stock in stocks:
             if (
-                stock.m_valuation_data.m_intrinsic_value_by_gurufocus is None
+                stock.m_intrinsic_value_by_gurufocus is None
                 or stock.m_price is None
             ):
-                print(stock.m_valuation_data.m_intrinsic_value_by_gurufocus)
+                print(stock.m_intrinsic_value_by_gurufocus)
                 continue
             if self._is_good_stock(stock):
                 good_stocks.append(stock)
@@ -47,7 +47,7 @@ class PersonalStrategy(StockInvestmentStrategy):
             True if this is a good stock. Otherwise returns False.
         """
         stock.m_price_to_intrinsic_value_ratio = (
-            stock.m_price / stock.m_valuation_data.m_intrinsic_value_by_gurufocus
+            stock.m_price / stock.m_intrinsic_value_by_gurufocus
         )
         return (
             # ROE: How much profit a company can generate relative to shareholders’ equity
