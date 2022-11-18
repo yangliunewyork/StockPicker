@@ -108,10 +108,10 @@ class GuruFocusDataCollector:
         if response.status_code != 200:
             print(response.status_code)
         parser = html.fromstring(response.content)
-        inner_text = parser.xpath('//div[@id="def_body_detail_height"]/font')[
+        free_cashflow_per_share_text = parser.xpath('//div[@id="def_body_detail_height"]/font')[
             0
         ].text_content()
-        match = re.search(r"\d{1,3}(,\d{3})*(\.\d+)?", inner_text)
+        match = re.search(r"\d{1,3}(,\d{3})*(\.\d+)?", free_cashflow_per_share_text)
         if match:
             free_cashflow_per_share_str = match.group(0).replace(",", "")
             # print (float(free_cashflow_per_share_str))

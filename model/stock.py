@@ -20,11 +20,8 @@ class Stock:
         self.m_earnings_per_share = None
         self.m_dividend_yield = None
         self.m_market_cap = None
-        self.m_share_outstading = None
         self.m_total_assets = None
         self.m_total_liabilities = None
-        self.m_equity_per_share = None
-        self.m_total_outstanding_shares = None
         self.m_free_cash_flow_per_share = None
         self.m_free_cash_flow_per_share_growth_rate = None
         # Health
