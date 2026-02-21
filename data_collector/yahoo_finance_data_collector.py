@@ -1,6 +1,7 @@
 """
 YahooFinanceDataCollector is a class to collect information from Yahoo finance API.
 """
+import logging
 import yfinance as yf
 
 from model.stock import Stock
@@ -16,42 +17,45 @@ class YahooFinanceDataCollector:
         """
         Return a list of stock information.
         """
-        print(f"Getting stock information for {stock.m_symbol} ...")
-        # yahoostock_info = Share(symbol)
-        stock_info = yf.Ticker(stock.m_symbol)
-        if "shortName" in stock_info.info:
-            stock.m_company_name = stock_info.info["shortName"]
-        if "currentPrice" in stock_info.info:
-            stock.m_price = stock_info.info["currentPrice"]
-        if "bookValue" in stock_info.info:
-            stock.m_book_value_per_share = stock_info.info["bookValue"]
-        if "priceToBook" in stock_info.info:
-            stock.m_price_to_book_ratio = stock_info.info["priceToBook"]
-        stock.m_dividend_yield = stock_info.info["dividendYield"] if "dividendYield" in stock_info.info else 0
-        if "profitMargins" in stock_info.info:
-            stock.m_profit_margin = stock_info.info["profitMargins"]
-        if "currentRatio" in stock_info.info:
-            stock.m_current_ratio = stock_info.info["currentRatio"]
-        if (
-            "debtToEquity" in stock_info.info
-            and stock_info.info["debtToEquity"] is not None
-        ):
-            stock.m_debt_to_equity = stock_info.info["debtToEquity"] / 100
-        if "marketCap" in stock_info.info:
-            stock.m_market_cap = stock_info.info["marketCap"]
-        if "returnOnAssets" in stock_info.info:
-            stock.m_return_on_assets = stock_info.info["returnOnAssets"]
-        if "returnOnEquity" in stock_info.info:
-            stock.m_return_on_equity = stock_info.info["returnOnEquity"]
-        if "pegRatio" in stock_info.info:
-            stock.m_peg_ratio = stock_info.info["pegRatio"]
-        stock.m_earnings_per_share = stock_info.info["trailingEps"] if "trailingEps" in stock_info.info else 0
+        try:
+            print(f"Getting stock information for {stock.m_symbol} ...")
+            # yahoostock_info = Share(symbol)
+            stock_info = yf.Ticker(stock.m_symbol)
+            if "shortName" in stock_info.info:
+                stock.m_company_name = stock_info.info["shortName"]
+            if "currentPrice" in stock_info.info:
+                stock.m_price = stock_info.info["currentPrice"]
+            if "bookValue" in stock_info.info:
+                stock.m_book_value_per_share = stock_info.info["bookValue"]
+            if "priceToBook" in stock_info.info:
+                stock.m_price_to_book_ratio = stock_info.info["priceToBook"]
+            stock.m_dividend_yield = stock_info.info["dividendYield"] if "dividendYield" in stock_info.info else 0
+            if "profitMargins" in stock_info.info:
+                stock.m_profit_margin = stock_info.info["profitMargins"]
+            if "currentRatio" in stock_info.info:
+                stock.m_current_ratio = stock_info.info["currentRatio"]
+            if (
+                "debtToEquity" in stock_info.info
+                and stock_info.info["debtToEquity"] is not None
+            ):
+                stock.m_debt_to_equity = stock_info.info["debtToEquity"] / 100
+            if "marketCap" in stock_info.info:
+                stock.m_market_cap = stock_info.info["marketCap"]
+            if "returnOnAssets" in stock_info.info:
+                stock.m_return_on_assets = stock_info.info["returnOnAssets"]
+            if "returnOnEquity" in stock_info.info:
+                stock.m_return_on_equity = stock_info.info["returnOnEquity"]
+            if "pegRatio" in stock_info.info:
+                stock.m_peg_ratio = stock_info.info["pegRatio"]
+            stock.m_earnings_per_share = stock_info.info["trailingEps"] if "trailingEps" in stock_info.info else 0
+        except Exception as e:
+            logging.error(f"Failed to get Yahoo Finance data for {stock.m_symbol}: {str(e)}")
         
 
 
 if __name__ == "__main__":
-    dataCollector = YahooFinanceDataCollector()
+    data_collector = YahooFinanceDataCollector()
     amazon_stock = Stock()
     amazon_stock.m_symbol = "BA"
-    dataCollector.get_stock_info(amazon_stock)
+    data_collector.get_stock_info(amazon_stock)
     print(amazon_stock.to_json())

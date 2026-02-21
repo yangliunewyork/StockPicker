@@ -132,7 +132,7 @@ Any python file that has `__main__` function means it can be run independently.
 However, you need to run `python setup.py install` first.
 
 ```
-python data_collector/guru_focus_data_collector.py
+python data_collector/yahoo_finance_data_collector.py
 ```
 
 # Development
@@ -177,3 +177,86 @@ black ./utils
 black ./model
 black ./investment_strategy
 ``` 
+
+
+# Testing
+
+Unit tests are located in the `tests/` directory with the following structure:
+
+```
+tests/
+├── data_collector/       # Tests for data collectors
+├── investment_strategy/  # Tests for investment strategies
+├── model/               # Tests for data models
+└── utils/               # Tests for utility functions
+```
+
+### Install test dependencies:
+
+```bash
+pip install pytest pytest-cov coverage
+```
+
+### Run all tests:
+
+```bash
+# Using custom test runner
+python run_tests.py
+
+# Using unittest
+python -m unittest discover tests
+
+# Using pytest (recommended)
+pytest tests/ -v
+```
+
+### Run specific test modules:
+
+```bash
+# Test specific module
+pytest tests/data_collector/ -v
+pytest tests/model/ -v
+pytest tests/utils/ -v
+
+# Test specific file
+python -m unittest tests.model.test_stock
+python -m unittest tests.utils.test_intrinsic_value_calculator
+```
+
+### Test Coverage:
+
+Check test coverage to see which code is tested:
+
+```bash
+# Run tests with coverage report
+pytest tests/ --cov --cov-report=term-missing
+
+# Generate HTML coverage report
+pytest tests/ --cov --cov-report=html
+
+# Open HTML report in browser
+open htmlcov/index.html
+```
+
+Or using coverage directly:
+
+```bash
+# Run tests and collect coverage
+coverage run -m unittest discover tests
+
+# View coverage report
+coverage report -m
+
+# Generate HTML report
+coverage html
+open htmlcov/index.html
+```
+
+### Test coverage includes:
+
+- Stock model (serialization, attributes)
+- IntrinsicValueCalculator (DCF and book value methods)
+- YahooFinanceDataCollector (API calls, error handling)
+- NasdaqDataCollector (FTP connection, parsing)
+- DataCollectorManager (orchestration)
+- PersonalStrategy (stock filtering and ranking)

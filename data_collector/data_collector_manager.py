@@ -8,7 +8,6 @@ from alive_progress import alive_it
 
 from data_collector.nasdaq_data_collector import NasdaqDataCollector
 from data_collector.yahoo_finance_data_collector import YahooFinanceDataCollector
-from data_collector.guru_focus_data_collector import GuruFocusDataCollector
 from model.stock import Stock
 
 
@@ -19,9 +18,8 @@ class DataCollectorManager:
     """
 
     _yahoo_finance_data_collector = YahooFinanceDataCollector()
-    _guru_focus_data_collector = GuruFocusDataCollector()
-    # Disable it as it has a rate limit that requires 30 seconds apart
-    # stockAnalysisWebsiteDataCollector = StockAnalysisWebsiteDataCollector()
+    # Disabled GuruFocus collector due to 403 blocking issues
+    # Disabled StockAnalysisWebsite collector due to rate limit (requires 30 seconds apart)
 
     def get_stock_tickers(self):
         """
@@ -48,11 +46,7 @@ class DataCollectorManager:
         Arguments:
             stock: A Stock instance.
         """
-        # sleep_time = 0.1
         self._yahoo_finance_data_collector.get_stock_info(stock)
-        self._guru_focus_data_collector.get_stock_info(stock)
-        # time.sleep(sleep_time)
-        # print ("Sleep {} seoncds to avoid being blocked by website".format(sleep_time))
 
 
 if __name__ == "__main__":

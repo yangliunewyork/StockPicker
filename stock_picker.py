@@ -13,8 +13,8 @@ from utils.intrinsic_value_calculator import IntrinsicValueCalculator
 
 
 def calculate_intrinsic_value(stocks):
-    perpetualGrowthRate = 0.02  # Choose inflation rate.
-    intrinsicValueCalculator = IntrinsicValueCalculator()
+    perpetual_growth_rate = 0.02  # Choose inflation rate.
+    intrinsic_value_calculator = IntrinsicValueCalculator()
     for stock in stocks:
         if stock.m_intrinsic_value is None:
             if (
@@ -22,36 +22,42 @@ def calculate_intrinsic_value(stocks):
                 and stock.m_free_cash_flow_per_share_growth_rate
                 and stock.m_weighted_average_cost_of_capital_ratio
             ):
-                stock.m_intrinsic_value = intrinsicValueCalculator.calculateIntrinsicValueBasedOnDiscountedCashFlow(
+                stock.m_intrinsic_value = intrinsic_value_calculator.calculate_intrinsic_value_based_on_discounted_cash_flow(
                     stock.m_free_cash_flow_per_share,
                     stock.m_free_cash_flow_per_share_growth_rate,
                     stock.m_weighted_average_cost_of_capital_ratio,
-                    perpetualGrowthRate,
+                    perpetual_growth_rate,
                 )
 
 def write_stocks_to_csv(stocks):
+    import os
     stock_attributes = stocks[0].get_stock_attributes()
-    with open('stocks.csv', 'w',) as csvfile:
+    csv_path = 'stocks.csv'
+    with open(csv_path, 'w',) as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(stock_attributes)
         for stock in stocks:
             row = []
             for attribute in stock_attributes:
                 row.append(getattr(stock, attribute))
-            writer.writerow(row)  
+            writer.writerow(row)
+    
+    absolute_path = os.path.abspath(csv_path)
+    print(f"\nStock data saved to: {absolute_path}")
+    print(f"Total stocks written: {len(stocks)}")  
 
 
 def main(argv):
-    argumentParser = argparse.ArgumentParser(description="Command list.")
-    argumentParser.add_argument(
+    argument_parser = argparse.ArgumentParser(description="Command list.")
+    argument_parser.add_argument(
         "-t", "--tickers", nargs="+", help="StockPicker.py -t AAPL AMZN", required=False
     )
-    argumentParser.add_argument(
+    argument_parser.add_argument(
         "-tf", "--tickers-file", help="StockPicker.py -tf ./tickers.txt", required=False
     )
-    args = argumentParser.parse_args()
+    args = argument_parser.parse_args()
 
-    dataCollectorManager = DataCollectorManager()
+    data_collector_manager = DataCollectorManager()
 
     tickers = []
     if args.tickers:
@@ -62,7 +68,7 @@ def main(argv):
             lines = file.readlines()
             tickers = [line.rstrip() for line in lines]
     else:
-        tickers = dataCollectorManager.get_stock_tickers()
+        tickers = data_collector_manager.get_stock_tickers()
 
     # Initialize a list of Stock instances with only m_symbol field value populated
     stocks = []
@@ -71,7 +77,7 @@ def main(argv):
         stock.m_symbol = ticker
         stocks.append(stock)
 
-    dataCollectorManager.gather_stock_information(stocks)
+    data_collector_manager.gather_stock_information(stocks)
 
     write_stocks_to_csv(stocks)
 

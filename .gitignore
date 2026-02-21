@@ -5,3 +5,5 @@ dist/
 .ipynb_checkpoints/
 StockPicker.egg-info/
 stocks.csv
+.coverage
+.vscode/
