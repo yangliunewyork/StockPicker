@@ -33,13 +33,55 @@ def write_stocks_to_csv(stocks):
     import os
     stock_attributes = stocks[0].get_stock_attributes()
     csv_path = 'stocks.csv'
+    
+    # Define which fields need formatting
+    dollar_fields = {'m_price', 'm_book_value_per_share', 'm_earnings_per_share', 
+                     'm_market_cap', 'm_total_assets', 'm_total_liabilities',
+                     'm_free_cash_flow_per_share', 'm_intrinsic_value_by_dcf',
+                     'm_intrinsic_value_by_gurufocus'}
+    
+    percentage_fields = {'m_dividend_yield', 'm_profit_margin', 'm_return_on_equity',
+                        'm_return_on_assets', 'm_return_on_capital', 
+                        'm_weighted_average_cost_of_capital_ratio',
+                        'm_price_to_book_ratio'}
+    
+    ratio_fields = {'m_current_ratio', 'm_debt_to_equity',
+                   'm_price_to_earnings_ratio', 'm_peg_ratio',
+                   'm_price_to_free_cash_flow_per_share', 'm_price_to_intrinsic_value_ratio'}
+    
+    def format_value(attribute, value):
+        """Format value based on attribute type"""
+        if value is None:
+            return ''
+        
+        if attribute in dollar_fields:
+            if attribute == 'm_market_cap' or attribute == 'm_total_assets' or attribute == 'm_total_liabilities':
+                # Format large numbers in billions/millions
+                if value >= 1_000_000_000:
+                    return f"{value / 1_000_000_000:.2f} billion$"
+                elif value >= 1_000_000:
+                    return f"{value / 1_000_000:.2f} million$"
+                else:
+                    return f"{value:,.2f}$"
+            else:
+                return f"{value:.2f}$"
+        elif attribute in percentage_fields:
+            # Yahoo Finance returns values as-is (0.9 = 0.9%, not 90%)
+            return f"{value:.2f}%"
+        elif attribute in ratio_fields:
+            return f"{value:.2f}"
+        else:
+            return value
+    
     with open(csv_path, 'w',) as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(stock_attributes)
         for stock in stocks:
             row = []
             for attribute in stock_attributes:
-                row.append(getattr(stock, attribute))
+                value = getattr(stock, attribute)
+                formatted_value = format_value(attribute, value)
+                row.append(formatted_value)
             writer.writerow(row)
     
     absolute_path = os.path.abspath(csv_path)
